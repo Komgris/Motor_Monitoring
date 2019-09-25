@@ -10,12 +10,11 @@ export default class PumpMonitor extends Component {
             <div class = "container">
                 <div class = "container-n">
                     <h1>Pump Station</h1>
-          
                     <div class = "container-s">
-                        <div class = "panel">
+                        <div class = "panel-1">
                         <Panel pumpNum = "1" keyAPI ={this.props.keytoapi} IP = {this.props.apiIP} />
                         </div>
-                        <div class = "panel"> 
+                        <div class = "panel-2"> 
                         <Panel pumpNum = "2" keyAPI ={this.props.keytoapi} IP = {this.props.apiIP} />
                         </div>
                     </div>

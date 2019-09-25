@@ -174,9 +174,10 @@ class PumpPanel extends Component {
 
     render() {
         return (
-            <div class="card" style ={{
+            <div class="border" style ={{
 
                 width : "100%",
+                height : "100%",
                 backgroundColor : "#e6e6e6",
                 // top: "10%",
                 // left: "40%"
@@ -184,8 +185,8 @@ class PumpPanel extends Component {
           <div  style ={{
              backgroundColor :`${this.state.colorwarning}`
           }} class="border-blink"> </div>
-            <div class = "card-body">
-                <a>Status :</a>  {this.state.currentPumpstatus.Value}
+            <div class = "content-border">
+                <a1>Status :  {this.state.currentPumpstatus.Value} </a1>
                 {/* <Popup trigger={<button className="button"> Open Modal </button>} modal>
                   {close => (
                     <div className="modal">
@@ -233,7 +234,7 @@ class PumpPanel extends Component {
                   
                 <Dropdown isOpen={this.state.btnDropright} toggle={() => { this.setState({ btnDropright: !this.state.btnDropright }); }}>
                 <DropdownToggle caret>
-                PUMP NO. {this.props.pumpNum}
+                <a2>PUMP NO. {this.props.pumpNum}</a2>
                 </DropdownToggle>
                 <DropdownMenu>
                 

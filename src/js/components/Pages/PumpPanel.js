@@ -234,7 +234,7 @@ class PumpPanel extends Component {
                   
                 <Dropdown isOpen={this.state.btnDropright} toggle={() => { this.setState({ btnDropright: !this.state.btnDropright }); }}>
                 <DropdownToggle caret>
-                <a2>PUMP NO. {this.props.pumpNum}</a2>
+                PUMP NO. {this.props.pumpNum}
                 </DropdownToggle>
                 <DropdownMenu>
                 

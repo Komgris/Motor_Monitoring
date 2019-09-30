@@ -6,6 +6,7 @@ import Location from './Map'
 import Chart from './Chart'
 import classnames from 'classnames';
 import './Assemblypump.css'
+import Table from './table'
 
 class Assemblypump extends Component {
     constructor(props) {
@@ -79,6 +80,7 @@ class Assemblypump extends Component {
                 <Row>
                   <Col >
                   <Chart keytoapi ={key} apiIP = {this.props.IP}/>
+                  {/* <Table/> */}
                   {/* <Chart keytoapi = {key}/> */}
                   </Col>
                 </Row>

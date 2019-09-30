@@ -17,20 +17,39 @@ export default class Chart extends Component {
             var jso2 = JSON.parse(graph.Value);
             var count = Object.keys(jso2).length;
             var i;
-            var arr_time=[],arr_pump=[],arr_Action=[];
+            // var arr_time=[],arr_pump=[],arr_Action=[];
             
-            for(i=0;i<count; i++){
-                arr_time[i] = jso2[i].Time
-                arr_pump[i] = jso2[i].PumpId
-                if(jso2[i].Event === "PumpStart")
+
+            const arr_time =  jso2.map((time) =>{
+                return time.Time;
+            })
+            const arr_pump =  jso2.map((time) =>{
+                return time.PumpId;
+            })
+            const arr_Action =  jso2.map((time) =>{
+                if(time.Event === "PumpStart")
                 {
-                    arr_Action[i] = true
+                    return true
                 }
                 else
                 {
-                    arr_Action[i] = false
+                    return false
                 }
-            }
+            })
+
+
+            // for(i=0;i<count; i++){
+            //     arr_time[i] = jso2[i].Time
+            //     arr_pump[i] = jso2[i].PumpId
+            //     if(jso2[i].Event === "PumpStart")
+            //     {
+            //         arr_Action[i] = true
+            //     }
+            //     else
+            //     {
+            //         arr_Action[i] = false
+            //     }
+            // }
             var newjson = {
                 labels: arr_time,
                 datasets:[
@@ -51,7 +70,7 @@ export default class Chart extends Component {
         if(this.props.keytoapi === "")
         {
             const token =  localStorage.getItem('userToken');
-            Axios.get(`${this.props.apiIP}/Pump/StatusHistory/${token}`)
+            Axios.get(`http://192.168.10.40/skapi/SystemAPI/Pump/StatusHistory/${token}`)
             .then(res => {
                 const persons = JSON.parse(res.data);
                 if(persons.IsSuccess)
@@ -62,7 +81,7 @@ export default class Chart extends Component {
         else
         {
             const token =  this.props.keytoapi;
-            Axios.get(`${this.props.apiIP}/Pump/StatusHistory/${token}`)
+            Axios.get(`http://192.168.10.40/skapi/SystemAPI/Pump/StatusHistory/${token}`)
             .then(res => {
                 const persons = JSON.parse(res.data);
                 if(persons.IsSuccess)

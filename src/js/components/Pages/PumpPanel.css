@@ -3,6 +3,7 @@ a1{
   font-weight: bold;
   
 }
+
 .blink{
   margin-right: 2px;
   text-decoration: blink;
@@ -26,6 +27,7 @@ a1{
     to {opacity: 0.0;}
   }
   .border-blink{
+    
     border: none;
     width: 100%;
     height: 20px;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './Map.css'
+import txt from '!!raw-loader!../config/Config.txt'
 import Axios from 'axios';
 
 
@@ -7,14 +8,15 @@ export default class Map extends Component {
     constructor(props) {
         super(props);
         this.state ={ 
-        mapSCR:""
+        mapSCR : "",
+        API : txt
         }
     }
     componentDidMount(){
         if(this.props.keytoapi === "")
         {
             const token = localStorage.getItem('userToken');
-            Axios.get(`${this.props.apiIP}/StationControl/${token}/sk`)
+            Axios.get(`${this.state.API}/StationControl/${token}/sk`)
             .then(res => {
                 const persons =(res.data);
                 if(persons !== "")
@@ -25,7 +27,7 @@ export default class Map extends Component {
         }
         else{
             const token = this.props.keytoapi;
-            Axios.get(`${this.props.apiIP}/StationControl/${token}/sk`)
+            Axios.get(`${this.state.API}/StationControl/${token}/sk`)
             .then(res =>{
                 const persons = (res.data);
                 if(persons !== "")

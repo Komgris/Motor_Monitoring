@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import {  Line  } from 'react-chartjs-2';
 import './Chart.css'
+import txt from '!!raw-loader!../config/Config.txt'
 import Axios from 'axios';
 
 export default class Chart extends Component {
     constructor(props) {
         super(props);
         this.state ={
-        chartData:[]
+        chartData:[],
+        API : txt
         }
     }
     convertJson = (graph) =>{
@@ -70,7 +72,7 @@ export default class Chart extends Component {
         if(this.props.keytoapi === "")
         {
             const token =  localStorage.getItem('userToken');
-            Axios.get(`${this.props.apiIP}/Pump/StatusHistory/${token}`)
+            Axios.get(`${this.state.API}/Pump/StatusHistory/${token}`)
             .then(res => {
                 const persons = JSON.parse(res.data);
                 if(persons.IsSuccess)
@@ -81,7 +83,7 @@ export default class Chart extends Component {
         else
         {
             const token =  this.props.keytoapi;
-            Axios.get(`${this.props.apiIP}/Pump/StatusHistory/${token}`)
+            Axios.get(`${this.state.API}/Pump/StatusHistory/${token}`)
             .then(res => {
                 const persons = JSON.parse(res.data);
                 if(persons.IsSuccess)

@@ -18,7 +18,7 @@ class PumpPanel extends Component {
           modal_stop: false,
           API: txt,
           dropdownOpen: false,
-          pumpnum:0,
+          pumpnum: this.props.pumpNum,
           IsSuccess: false, 
           isSpinner: "",
           accessToken:"",
@@ -59,37 +59,36 @@ class PumpPanel extends Component {
     
     componentDidMount()
       {
-        // if (localStorage.getItem('userToken') === null || localStorage.getItem('userToken') === "")
-        // {   
-        //   this.props.history.push(`/`);
-        // }
-        // else if(this.props.keytoapi === null || this.props.keytoapi ==="")
-        // {
-        //   this.props.history.push(`/`);
-        // }
-        // else
-        // {
-        //   this.checkToken();
-        //   this.loadData();
-        //   setInterval(this.loadData, 5000);    
-        // }
-        this.loadData();
-        setInterval(this.loadData, 5000);    
+        if (localStorage.getItem('userToken') === null || localStorage.getItem('userToken') === "")
+        {   
+          this.props.history.push(`/`);
+        }
+        else if(this.props.keytoapi === null || this.props.keytoapi ==="")
+        {
+          this.props.history.push(`/`);
+        }
+        else
+        {
+          //this.setState((state) => ({ API : this.props.IP}));
+          console.log(this.state.API)
+          this.checkToken();
+          this.loadData();
+          setInterval(this.loadData.bind(this), 5000);    
+        }
+        
     }
     async loadData() {
       {
-          Axios.get(`${this.state.API}/Pump/WebUpdateStatus/${this.props.pumpNum}/${token}`)
+          Axios.get(`${this.state.API}/Pump/WebUpdateStatus/${this.state.pumpnum}/${this.state.accessToken}`)
           //Axios.get(`http://192.168.10.36/skapi/SystemAPI/Pump/RestAPI`)
           .then(res => {
               const result = JSON.parse(res.data);
-              
               if(result.IsSuccess)
               {
                 
-                  var update_status = result.Value;
-                  // console.log(result.Value)
+                  var update_status =  JSON.parse(result.Value);
+                  
                   //const aa = {"IsSuccess":true,"Value":{"RemoteLocal":"Remote","Fsw":false,"Rundry":false,"PumpStart":true,"PumpStop":false}}
-                
 
                  const colorFsw = (fsw) => {
                   switch(fsw){
@@ -105,7 +104,7 @@ class PumpPanel extends Component {
                     case false :
                        return '';
                     case true :
-                       return '<div class ="blink"><Badge color="danger">Rundry</Badge></div>'
+                       return <Badge color="danger">Rundry</Badge>
                   }
                  }
                   this.setState({
@@ -148,7 +147,7 @@ class PumpPanel extends Component {
         }
         // this.setState({ accessToken : token  });
         this.setState((state) => ({ accessToken : token}));
-        Axios.get(`${this.state.API}/Pump/ReadStatus/${this.props.pumpNum}/${token}`)
+        Axios.get(`${this.state.API}/Pump/ReadStatus/${this.state.pumpnum}/${token}`)
        .then(res => {
         const status = JSON.parse(res.data);
        
@@ -168,11 +167,11 @@ class PumpPanel extends Component {
       })
     }
     Pumpreset(){
-      Axios.get(`${this.state.API}/Pump/Reset/${this.props.pumpNum}/${this.state.accessToken}`)
+      Axios.get(`${this.state.API}/Pump/Reset/${this.state.pumpnum}/${this.state.accessToken}`)
     }
 
     PumpStart(){
-        Axios.get(`${this.state.API}/Pump/Start/${this.props.pumpNum}/${this.state.accessToken}`)
+        Axios.get(`${this.state.API}/Pump/Start/${this.state.pumpnum}/${this.state.accessToken}`)
         this.Pumpget()
         // .then(res => {
         //   this.Pumpget()
@@ -180,7 +179,7 @@ class PumpPanel extends Component {
       }
 
       PumpStop(){
-        Axios.get(`${this.state.API}/Pump/Stop/${this.props.pumpNum}/${this.state.accessToken}`)
+        Axios.get(`${this.state.API}/Pump/Stop/${this.state.pumpnum}/${this.state.accessToken}`)
         this.Pumpget()
         // .then(res => {
         //   this.Pumpget()
@@ -188,7 +187,7 @@ class PumpPanel extends Component {
       }
       
     Pumpget =() =>{
-        Axios.get(`${this.state.API}/Pump/ReadStatus/${this.props.pumpNum}/${this.state.accessToken}`)
+        Axios.get(`${this.state.API}/Pump/ReadStatus/${this.state.pumpnum}/${this.state.accessToken}`)
         .then(res => this.setState({ currentPumpstatus: JSON.parse(res.data) } ))   
 
         this.loadData();
@@ -208,7 +207,7 @@ class PumpPanel extends Component {
     }
       
       checkExpried =() =>{
-        Axios.get(`${this.state.API}/Pump/ReadStatus/${this.props.pumpNum}/${this.state.accessToken}`)
+        Axios.get(`${this.state.API}/Pump/ReadStatus/${this.state.pumpnum}/${this.state.accessToken}`)
         .then(res => {
             const status = JSON.parse(res.data);
             if(status.Value === "Access denied!")
@@ -227,11 +226,12 @@ class PumpPanel extends Component {
 
     render() {
         return (
-            <div class="border" style ={{
+            <div class="border-panel" style ={{
 
                 width : "100%",
                 height : "100%",
                 backgroundColor : "#e6e6e6",
+                
             }}>
           <div  style ={{
              backgroundColor :`${this.state.colorwarning}`
@@ -240,9 +240,10 @@ class PumpPanel extends Component {
               <div class = "status-warning">
               <h4><Badge color="primary">{this.state.Remote}</Badge></h4>
               <h4><Badge color={this.state.Fsw}>Flow Switch</Badge></h4>
-              {this.state.Rundry}
+              <h4><div class ="blink">{this.state.Rundry}</div></h4>
               </div>
                 <a1>Status :  {this.state.currentPumpstatus.Value} </a1>
+                
                 <div class = "btnContain">            
                 <Dropdown isOpen={this.state.btnDropright} toggle={() => { this.setState({ btnDropright: !this.state.btnDropright }); }} style ={{    
                 }}>

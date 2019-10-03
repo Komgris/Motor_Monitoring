@@ -17,13 +17,14 @@ export default class App extends Component {
 
     componentDidMount(){
        this.setState({ textIP : txt })
-    //    console.log(IPtxt)
-    //    console.log(txt)
+       console.log(txt)
     }
 
     callbackFunction = ( key ) =>{
      this.setState({ keyValid : key }) 
     }
+
+ 
 
     render() {
         return (

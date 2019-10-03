@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem,Modal, ModalHeader, ModalBody, ModalFooter,Button  } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem,Modal, ModalHeader, ModalBody, ModalFooter,Button,Badge  } from 'reactstrap';
 // import txt from '!!raw-loader!./js/components/config/Config.txt'
 import txt from '!!raw-loader!../config/Config.txt'
 import Axios from 'axios';
@@ -28,7 +28,10 @@ class PumpPanel extends Component {
           currentPumpstatus:[],
           tooltipOpen: false,
           colorwarning:"",
-          realPumpstatus:[]
+          realPumpstatus:[],
+          Remote:"",
+          Fsw:"",
+          Rundry:"",
         };
       }
 
@@ -54,35 +57,82 @@ class PumpPanel extends Component {
     // }
 
     
-    componentDidMount(){
-        if (localStorage.getItem('userToken') === null || localStorage.getItem('userToken') === "")
-        {   
-          
-          this.props.history.push(`/`);
-        }
-        else if(this.props.keytoapi === null || this.props.keytoapi ==="")
-        {
-          this.props.history.push(`/`);
-        }
-        else
-        {
-          this.checkToken();       
-        }
-        
+    componentDidMount()
+      {
+        // if (localStorage.getItem('userToken') === null || localStorage.getItem('userToken') === "")
+        // {   
+        //   this.props.history.push(`/`);
+        // }
+        // else if(this.props.keytoapi === null || this.props.keytoapi ==="")
+        // {
+        //   this.props.history.push(`/`);
+        // }
+        // else
+        // {
+        //   this.checkToken();
+        //   this.loadData();
+        //   setInterval(this.loadData, 5000);    
+        // }
+        this.loadData();
+        setInterval(this.loadData, 5000);    
     }
+    async loadData() {
+      {
+          Axios.get(`${this.state.API}/Pump/WebUpdateStatus/${this.props.pumpNum}/${token}`)
+          //Axios.get(`http://192.168.10.36/skapi/SystemAPI/Pump/RestAPI`)
+          .then(res => {
+              const result = JSON.parse(res.data);
+              
+              if(result.IsSuccess)
+              {
+                
+                  var update_status = result.Value;
+                  // console.log(result.Value)
+                  //const aa = {"IsSuccess":true,"Value":{"RemoteLocal":"Remote","Fsw":false,"Rundry":false,"PumpStart":true,"PumpStop":false}}
+                
+
+                 const colorFsw = (fsw) => {
+                  switch(fsw){
+                    case false :
+                       return "secondary";
+                    case true :
+                       return  "success"
+                  }
+                 }
+
+                 const IsRundry = (is) => {
+                  switch(is){
+                    case false :
+                       return '';
+                    case true :
+                       return '<div class ="blink"><Badge color="danger">Rundry</Badge></div>'
+                  }
+                 }
+                  this.setState({
+                    Remote : update_status.RemoteLocal,
+                    Fsw : colorFsw(update_status.Fsw),
+                    Rundry  : IsRundry(update_status.Rundry)
+                  });
+              }
+              
+          })
+          console.log("loop")
+        }
+   }
     blinkWarning = () =>{
       switch(this.state.currentPumpstatus.Value){
         case "Error":
-            this.setState((state) => ({ colorwarning : "red"}));
+            this.setState((state) => ({ colorwarning : "yellow"}));
             break;
         case "Running":
             this.setState((state) => ({ colorwarning : "green"}));
             break;
         case "Stop":
-            this.setState((state) => ({ colorwarning : "grey"}));
+            this.setState((state) => ({ colorwarning : "red"}));
             break;
       }
     }
+    
 
     checkToken =()=>{
         var token;
@@ -117,25 +167,31 @@ class PumpPanel extends Component {
             }
       })
     }
+    Pumpreset(){
+      Axios.get(`${this.state.API}/Pump/Reset/${this.props.pumpNum}/${this.state.accessToken}`)
+    }
 
     PumpStart(){
         Axios.get(`${this.state.API}/Pump/Start/${this.props.pumpNum}/${this.state.accessToken}`)
-        .then(res => {
-          this.Pumpget()
-        })       
+        this.Pumpget()
+        // .then(res => {
+        //   this.Pumpget()
+        // })       
       }
 
       PumpStop(){
         Axios.get(`${this.state.API}/Pump/Stop/${this.props.pumpNum}/${this.state.accessToken}`)
-        .then(res => {
-          this.Pumpget()
-        })
+        this.Pumpget()
+        // .then(res => {
+        //   this.Pumpget()
+        // })
       }
       
     Pumpget =() =>{
         Axios.get(`${this.state.API}/Pump/ReadStatus/${this.props.pumpNum}/${this.state.accessToken}`)
         .then(res => this.setState({ currentPumpstatus: JSON.parse(res.data) } ))   
-           
+
+        this.loadData();
         this.checkExpried();
         if(this.state.modal_start)
         {
@@ -149,9 +205,6 @@ class PumpPanel extends Component {
             modal_stop: !prevState.modal_stop
           }));
         }
-
-        
-                   
     }
       
       checkExpried =() =>{
@@ -179,60 +232,20 @@ class PumpPanel extends Component {
                 width : "100%",
                 height : "100%",
                 backgroundColor : "#e6e6e6",
-                // top: "10%",
-                // left: "40%"
             }}>
           <div  style ={{
              backgroundColor :`${this.state.colorwarning}`
           }} class="border-blink"> </div>
             <div class = "content-border">
+              <div class = "status-warning">
+              <h4><Badge color="primary">{this.state.Remote}</Badge></h4>
+              <h4><Badge color={this.state.Fsw}>Flow Switch</Badge></h4>
+              {this.state.Rundry}
+              </div>
                 <a1>Status :  {this.state.currentPumpstatus.Value} </a1>
-                {/* <Popup trigger={<button className="button"> Open Modal </button>} modal>
-                  {close => (
-                    <div className="modal">
-                      <a className="close" onClick={close}>
-                        &times;
-                      </a>
-                      <div className="header"> Modal Title </div>
-                      <div className="content">
-                        {" "}
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
-                        Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
-                        delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
-                        <br />
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
-                        commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
-                        explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
-                      </div>
-                      <div className="actions">
-                        <Popup
-                          trigger={<button className="button"> Trigger </button>}
-                          position="top center"
-                          closeOnDocumentClick
-                        >
-                          <span>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
-                            magni omnis delectus nemo, maxime molestiae dolorem numquam
-                            mollitia, voluptate ea, accusamus excepturi deleniti ratione
-                            sapiente! Laudantium, aperiam doloribus. Odit, aut.
-                          </span>
-                        </Popup>
-                        <button
-                          className="button"
-                          onClick={() => {
-                            console.log("modal closed ");
-                            close();
-                          }}
-                        >
-                          close modal
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </Popup> */}
-                <div class = "btnContain">
-                  
-                <Dropdown isOpen={this.state.btnDropright} toggle={() => { this.setState({ btnDropright: !this.state.btnDropright }); }}>
+                <div class = "btnContain">            
+                <Dropdown isOpen={this.state.btnDropright} toggle={() => { this.setState({ btnDropright: !this.state.btnDropright }); }} style ={{    
+                }}>
                 <DropdownToggle caret>
                 PUMP NO. {this.props.pumpNum}
                 </DropdownToggle>
@@ -271,8 +284,11 @@ class PumpPanel extends Component {
 
                 </DropdownMenu>
                 </Dropdown>
-                <button  type="button" class="btn btn-primary " aria-label="Left Align" onClick = {this.Pumpget.bind(this)} >
+                <button  type="button" class="btn btn-primary " aria-label="Left Align" onClick = {this.Pumpget.bind(this)}>
                 <div class="icon"><a class="fas fa-redo-alt"></a></div>
+                </button>
+                <button  type="button" class="btn btn-warning " aria-label="Left Align"  onClick = {this.Pumpreset.bind(this)} >
+                RESET
                 </button>
                 </div>
                 {/* <p>{this.state.accessToken}</p> */}

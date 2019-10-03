@@ -70,7 +70,7 @@ export default class Chart extends Component {
         if(this.props.keytoapi === "")
         {
             const token =  localStorage.getItem('userToken');
-            Axios.get(`http://192.168.10.40/skapi/SystemAPI/Pump/StatusHistory/${token}`)
+            Axios.get(`${this.props.apiIP}/Pump/StatusHistory/${token}`)
             .then(res => {
                 const persons = JSON.parse(res.data);
                 if(persons.IsSuccess)
@@ -81,7 +81,7 @@ export default class Chart extends Component {
         else
         {
             const token =  this.props.keytoapi;
-            Axios.get(`http://192.168.10.40/skapi/SystemAPI/Pump/StatusHistory/${token}`)
+            Axios.get(`${this.props.apiIP}/Pump/StatusHistory/${token}`)
             .then(res => {
                 const persons = JSON.parse(res.data);
                 if(persons.IsSuccess)

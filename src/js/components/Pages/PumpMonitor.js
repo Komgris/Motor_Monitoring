@@ -1,9 +1,20 @@
 import React, { Component } from 'react'
 import Panel from './PumpPanel'
-import  scada  from '../Img/scada.png' 
 import './PumpMonitor.css'
+import Remote from './Remote'
+import Axios from 'axios';
 
 export default class PumpMonitor extends Component {
+    constructor(props) {
+        super(props);
+        this.state ={
+            propRemote:"",
+            propFsw:"",
+            propRundry:""
+        }
+    }
+
+   
     render() {
         return (
             <div class = "background">
@@ -17,9 +28,11 @@ export default class PumpMonitor extends Component {
                         <div class = "panel-2"> 
                         <Panel pumpNum = "2" keyAPI ={this.props.keytoapi} IP = {this.props.apiIP} />
                         </div>
+                    </div>   
                     </div>
-                    </div>
+                   
             </div>
+            
             </div>
         )
     }

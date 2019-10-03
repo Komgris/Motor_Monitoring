@@ -14,7 +14,7 @@ export default class Map extends Component {
         if(this.props.keytoapi === "")
         {
             const token = localStorage.getItem('userToken');
-            Axios.get(`http://192.168.10.40/skapi/SystemAPI/StationControl/${token}/sk`)
+            Axios.get(`${this.props.apiIP}/StationControl/${token}/sk`)
             .then(res => {
                 const persons =(res.data);
                 if(persons !== "")
@@ -25,7 +25,7 @@ export default class Map extends Component {
         }
         else{
             const token = this.props.keytoapi;
-            Axios.get(`http://192.168.10.40/skapi/SystemAPI/StationControl/${token}/sk`)
+            Axios.get(`${this.props.apiIP}/StationControl/${token}/sk`)
             .then(res =>{
                 const persons = (res.data);
                 if(persons !== "")

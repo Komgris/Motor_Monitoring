@@ -3,7 +3,23 @@ a1{
   font-weight: bold;
   
 }
-
+.blink{
+  margin-right: 2px;
+  text-decoration: blink;
+  -webkit-animation-name: blinker;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-iteration-count:infinite;
+  -webkit-animation-timing-function:ease-in-out;
+  -webkit-animation-direction: alternate;
+}
+/* .modal-backdrop fade show{
+  width: 100%;
+  height: 100%;
+} */
+.status-warning{
+  display:flex;
+  flex-direction: row;
+}
 
   @-webkit-keyframes blinker {
     from {opacity: 1.0;}

@@ -31,20 +31,20 @@ export default class App extends Component {
                 <div>
                 <Router>
                 <Header/>
-                {/* <Route exact path = "/" component={ Login } /> */}
+            
                 <Route  exact path ="/" render = {props =>(
                     <React.Fragment>
                     <Login parentCall = {this.callbackFunction}  IP = {this.state.textIP} /> 
-                    {/* IP = {this.state.textIP} */}
+                   
                     </React.Fragment> 
                 )}/>
                 <Route   path ="/pump" render = {props =>(
                     <React.Fragment>
                     <Assemblypump  sendApi = {this.state.keyValid} IP = {this.state.textIP} /> 
-                    {/* IP = {this.state.textIP} */}
+                   
                     </React.Fragment>
-                )} />
-                </Router>
+                )} /> 
+                </Router> 
                 </div>
             </div>
         )

@@ -32,8 +32,8 @@ export default class App extends Component {
                 <div>
                 <Router>
                 <Header/>
-            
-                <Route  exact path ="/" render = {props =>(
+             
+                 <Route  exact path ="/" render = {props =>(
                     <React.Fragment>
                     <Login parentCall = {this.callbackFunction}  IP = {this.state.textIP} /> 
                    
@@ -44,7 +44,7 @@ export default class App extends Component {
                     <Assemblypump  sendApi = {this.state.keyValid} IP = {this.state.textIP} /> 
                    
                     </React.Fragment>
-                )} /> 
+                )} />  
                 </Router> 
                 </div>
             </div>

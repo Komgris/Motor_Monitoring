@@ -6,6 +6,52 @@
 h1{
     text-align: center;
 }
+.symbol{
+    display:flex;
+    flex-direction: row  ;
+}
+.container-pump-status{
+    display:flex;
+    flex-direction: column  ;
+    margin-left: 512px;
+    margin-top: 10px;
+}
+.border-pump{
+  
+   
+}
+.border-pump-2{
+    margin-top: 107px;
+    margin-left : 3px;
+
+   
+}
+.container-pump-flow{
+    display:flex;
+    flex-direction: column  ;
+    
+    margin-left: 145px;
+    margin-top: 73px;
+    /* //margin-left: 5px; */
+  
+
+}
+
+.border-flow-panel{
+ 
+   
+   
+}
+
+
+.border-flow-panel2{
+ 
+   
+    margin-top: 130px;
+    margin-left : 5px;
+
+}
+
 
 .background{
     

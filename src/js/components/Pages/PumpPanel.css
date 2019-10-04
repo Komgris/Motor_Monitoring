@@ -1,13 +1,9 @@
 
-a1{
-  font-weight: bold;
-  
-}
 
 .blink{
   margin-right: 2px;
   text-decoration: blink;
-  -webkit-animation-name: blinker;
+  -webkit-animation-name: blinker-border;
   -webkit-animation-duration: 1s;
   -webkit-animation-iteration-count:infinite;
   -webkit-animation-timing-function:ease-in-out;
@@ -22,7 +18,7 @@ a1{
   flex-direction: row;
 }
 
-  @-webkit-keyframes blinker {
+  @-webkit-keyframes blinker-border {
     from {opacity: 1.0;}
     to {opacity: 0.0;}
   }
@@ -32,7 +28,7 @@ a1{
     width: 100%;
     height: 20px;
     text-decoration: blink;
-    -webkit-animation-name: blinker;
+    -webkit-animation-name: blinker-border;
     -webkit-animation-duration: 1s;
     -webkit-animation-iteration-count:infinite;
     -webkit-animation-timing-function:ease-in-out;
@@ -45,8 +41,9 @@ a1{
     font-size: 15px;
   }
   .content-border{
-    margin: 7px 7px 7px 7px;
+    margin: 7px 7px 7px 7px; 
+    /* margin-bottom: 100px */
   }
-  .border{
+  .border-panel{
     border-radius: 10px 10px 10px 10px;
   }

@@ -12,15 +12,13 @@ export default class Chart extends Component {
         API : txt
         }
     }
-    convertJson = (graph) =>{
+    convertJson = (graph,pumpnum) =>{
 
         if(graph.Value !== "Access denied!")
         {
             var jso2 = JSON.parse(graph.Value);
             var count = Object.keys(jso2).length;
             var i;
-            // var arr_time=[],arr_pump=[],arr_Action=[];
-            
 
             const arr_time =  jso2.map((time) =>{
                 return time.Time;
@@ -64,7 +62,8 @@ export default class Chart extends Component {
                     }
                 ]
             }
-            this.setState({ chartData :  newjson });
+            //return newjson;
+             this.setState({ chartData :  newjson });
      }
     }
 
@@ -96,6 +95,7 @@ export default class Chart extends Component {
     }
 
     render() {
+        
         return (
             <div  className = "chart" >            
             <Line data={this.state.chartData}

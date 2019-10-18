@@ -21,7 +21,9 @@ import Flowswitch from './Flowswitch'
             Fsw2:"",
             Rundry2:"",
             accessToken:"",
-            API:txt
+            API:txt,
+            Fault2S1:"",
+            Fault2S2:""
         }
     }
     // if (localStorage.getItem('userToken') === null || localStorage.getItem('userToken') === "")
@@ -65,16 +67,13 @@ import Flowswitch from './Flowswitch'
     async loadData() {
 
             {
-              
                 Axios.get(`${this.state.API}/Pump/WebUpdateStatus/${this.state.accessToken}`)
                 //Axios.get(`http://192.168.10.36/skapi/SystemAPI/Pump/RestAPI`)
                 .then(res => { const result = JSON.parse(res.data);
                         if(result.Value === "Access denied!")
                             {
-                             
                               localStorage.setItem('userToken', "");
                               this.props.history.push(`/`);
-                              
                             }
                             else
                             {
@@ -82,37 +81,20 @@ import Flowswitch from './Flowswitch'
                                 {
                                     //console.log(this.state.accessToken)
                                     var update_status =  JSON.parse(result.Value);
-                                    console.log(update_status)
+                                    
                                     this.setState({
                                         Remote1 : update_status.RemoteLocal1,
                                         Fsw1 : update_status.Fsw1,
                                         Rundry1  : update_status.Rundry1,
                                         pump1  : update_status.PumpStatus1,
-
+                                        Fault2S1 : update_status.sFault1,
+                                        
                                         Remote2 : update_status.RemoteLocal2,
                                         Fsw2 : update_status.Fsw2,
                                         Rundry2  : update_status.Rundry2,
-                                        pump2  : update_status.PumpStatus2
+                                        pump2  : update_status.PumpStatus2,
+                                        Fault2S2 : update_status.sFault2,
                                       });
-                                //    const colorFsw = (fsw) => {
-                                //     switch(fsw){
-                                //       case false :
-                                //          return "secondary";
-                                //       case true :
-                                //          return  "success"
-                                //     }
-                                //    }
-                  
-                                //    const IsRundry = (is) => {
-                                //     switch(is){
-                                //       case false :
-                                //          return '';
-                                //       case true :
-                                //          return <Badge color="danger">Rundry</Badge>
-                                //     }
-                                //    }
-
-                                   
                                 }
                                 
                             }
@@ -131,11 +113,11 @@ import Flowswitch from './Flowswitch'
                     <h1>Pump Station</h1>
                     <div class = "container-s">
                         <div class = "panel-1">
-                        <Panel pumpNum = "1" keyAPI ={this.state.accessToken} status = {this.state.pump1}  runDry = {this.state.Rundry1} remote = {this.state.Remote1}/>
+                        <Panel pumpNum = "1" keyAPI ={this.state.accessToken} status = {this.state.pump1}  runDry = {this.state.Rundry1} remote = {this.state.Remote1} F2S = {this.state.Fault2S1}/>
                        
                         </div>
                         <div class = "panel-2"> 
-                        <Panel pumpNum = "2" keyAPI ={this.state.accessToken}  status = {this.state.pump2} runDry = {this.state.Rundry2} remote = {this.state.Remote2}/>
+                        <Panel pumpNum = "2" keyAPI ={this.state.accessToken}  status = {this.state.pump2} runDry = {this.state.Rundry2} remote = {this.state.Remote2} F2S = {this.state.Fault2S2}/>
                         </div>
                         
              

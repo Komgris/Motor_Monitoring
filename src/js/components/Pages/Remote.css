@@ -12,17 +12,10 @@
     width: 40px;
     height: 40px;
     text-decoration: blink;
-    -webkit-animation-name: blinker;
+    -webkit-animation-name:  blinker-border;
     -webkit-animation-duration: 1s;
     -webkit-animation-iteration-count:infinite;
     -webkit-animation-timing-function:ease-in-out;
     -webkit-animation-direction: alternate;
 }
-@-webkit-keyframes blinker {
-    0% {
-        background-color: yellow;
-      }
-      100% {
-        background-color: white;
-      }
-  }
+

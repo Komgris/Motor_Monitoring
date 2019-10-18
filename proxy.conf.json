@@ -1,0 +1,8 @@
+{
+    "/dev/*": {
+      "target": "https://google.com/",
+      "secure": false
+    },
+    "changeOrigin": false,
+    "logLevel": "debug"
+  }

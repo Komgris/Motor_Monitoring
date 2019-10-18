@@ -1,0 +1,26 @@
+.border-table{
+    border: 2px solid rgba(0, 0, 0, 0.24);
+    margin: 10px 10px 10px 10px;
+    text-align: center;
+    width: auto;
+}
+.search-panel{
+    display: flex;
+    justify-content: center;
+    align-items:baseline;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+.center{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.date-content{
+    margin: 10px 10px 10px 10px;
+}
+.top-panel{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}

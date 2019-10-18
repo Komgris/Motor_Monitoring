@@ -7,6 +7,7 @@ import Chart from './Chart'
 import classnames from 'classnames';
 import './Assemblypump.css'
 import Table from './table'
+import Alarmnoti from './Alarmnoti';
 
 class Assemblypump extends Component {
     constructor(props) {
@@ -46,7 +47,7 @@ class Assemblypump extends Component {
                   className={classnames({ active: this.state.activeTab === '2' })}
                   onClick={() => { this.toggle('2'); }}
                 ><i class="fas fa-chart-bar"></i>
-                  HISTORY
+                  START/STOP HISTORY
                 </NavLink>
               </NavItem>
               <NavItem>
@@ -57,6 +58,15 @@ class Assemblypump extends Component {
                   LOCATION
                 </NavLink>
               </NavItem>
+
+              <NavItem>
+                <NavLink
+                  className={classnames({ active: this.state.activeTab === '4' })}
+                  onClick={() => { this.toggle('4'); }}
+                ><i class="far fa-bell"></i>
+                  ALARM HISTORY
+                </NavLink>
+              </NavItem>
              
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
@@ -64,30 +74,33 @@ class Assemblypump extends Component {
 
                   <div class ="wrapper fadeInDown">
             
-                    <Container>
-                    {/* */}
-                    <Row >
-                    <Pumpmoni keytoapi ={key} apiIP = {this.props.IP}/>
-
+                    <div class = "alarm-panel">
+                     
+                      <Pumpmoni keytoapi ={key} apiIP = {this.props.IP}  />
+                     
+                    
+                    <Alarmnoti/>
                     {/* apiIP = {IP} */}
                     {/* <Pumpmoni keytoapi = {key} /> */}
-            
-                    </Row>
-                    </Container>
+                    </div>
                     </div>
 
               </TabPane>
               <TabPane tabId="2">
-                <Row>
-                  <Col >
+         
                   <Chart keytoapi ={key} apiIP = {this.props.IP}/>
                   {/* <Table/> */}
                   {/* <Chart keytoapi = {key}/> */}
-                  </Col>
-                </Row>
+            
               </TabPane>
               <TabPane tabId="3">
                 <Location keytoapi ={key} apiIP = {this.props.IP}/>
+                {/* apiIP = {IP}  */}
+                    {/* <Location keytoapi = {key} /> */}
+              
+              </TabPane>
+              <TabPane tabId="4">
+                <Table keytoapi ={key} apiIP = {this.props.IP}/>
                 {/* apiIP = {IP}  */}
                     {/* <Location keytoapi = {key} /> */}
               

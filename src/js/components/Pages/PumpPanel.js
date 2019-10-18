@@ -9,6 +9,7 @@ import './PumpPanel.css'
 class PumpPanel extends Component {
     constructor(props) {
         super(props);
+        this.f2s = this.f2s.bind(this);
         this.toggle = this.toggle.bind(this);
         this.blinkStatus = this.blinkStatus.bind(this);
         this.Rundry_status = this.Rundry_status.bind(this);
@@ -108,19 +109,27 @@ class PumpPanel extends Component {
   //         console.log("loop")
   //       }
   //  }
+  f2s = () =>{
+    switch(this.props.F2S){
+      case true:
+          return <Badge color="danger">Fault to Start</Badge>
+      case false:
+          return ""
+  }
+}
     blinkStatus = () =>{
       switch(this.props.status){
         case "Error":
-           return "black"
+           return  <div  style ={{ backgroundColor :`black`}} class="border-noblink"> </div>
           
         case "Run":
-            return "#66ff33"
+            return  <div  style ={{ backgroundColor :`#66ff33`}} class="border-noblink"> </div>
            
         case "Stop":
-            return "red"
+            return  <div  style ={{ backgroundColor :`red`}} class="border-noblink"> </div>
            
         case "Fault":
-            return "yellow"
+            return  <div  style ={{ backgroundColor :`yellow`}}  class="border-blink"> </div>
            
       }
     }
@@ -226,7 +235,9 @@ class PumpPanel extends Component {
       
 
     render() {
+     
 
+      const fault2start = this.f2s();
       const colorwarning = this.blinkStatus();
       const Remote = this.props.remote;
       const Pumpstatus = this.props.status;
@@ -240,9 +251,8 @@ class PumpPanel extends Component {
                 backgroundColor : "#e6e6e6",
                 
             }}>
-          <div  style ={{
-             backgroundColor :`${colorwarning}`
-          }} class="border-blink"> </div>
+             <div class = "position-border"> {colorwarning}    </div> 
+         
           
             <div class = "content-border"> 
 
@@ -250,13 +260,14 @@ class PumpPanel extends Component {
 
               <h4><Badge color="primary">{Remote}</Badge></h4>
               <h4><div class ="blink">{rundry}</div></h4>
+              <h4><div class ="blink">{fault2start}</div></h4>
               </div>
-                <a1>Status :  {Pumpstatus} </a1>
+                <a>Status :  {Pumpstatus} </a>
                 <div class = "btnContain">            
                 <Dropdown isOpen={this.state.btnDropright} toggle={() => { this.setState({ btnDropright: !this.state.btnDropright }); }} style ={{    
                 }}>
                 <DropdownToggle caret>
-                PUMP NO. {this.props.pumpNum}
+                PUMP  {this.props.pumpNum}
                 </DropdownToggle>
                 <DropdownMenu>
                 

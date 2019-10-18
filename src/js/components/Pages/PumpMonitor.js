@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import Axios from 'axios';
 import txt from '!!raw-loader!../config/Config.txt';
 import Flowswitch from './Flowswitch'
+import Alarmnoti from './Alarmnoti';
 
  class PumpMonitor extends Component {
     intervalID = 0;
@@ -23,7 +24,8 @@ import Flowswitch from './Flowswitch'
             accessToken:"",
             API:txt,
             Fault2S1:"",
-            Fault2S2:""
+            Fault2S2:"",
+            Alarm:""
         }
     }
     // if (localStorage.getItem('userToken') === null || localStorage.getItem('userToken') === "")
@@ -81,6 +83,8 @@ import Flowswitch from './Flowswitch'
                                 {
                                     //console.log(this.state.accessToken)
                                     var update_status =  JSON.parse(result.Value);
+                                    var update_alarm =  JSON.parse(result.Alarm);
+
                                     
                                     this.setState({
                                         Remote1 : update_status.RemoteLocal1,
@@ -94,6 +98,7 @@ import Flowswitch from './Flowswitch'
                                         Rundry2  : update_status.Rundry2,
                                         pump2  : update_status.PumpStatus2,
                                         Fault2S2 : update_status.sFault2,
+                                        Alarm :  update_alarm
                                       });
                                 }
                                 
@@ -104,43 +109,61 @@ import Flowswitch from './Flowswitch'
    
   
     render() {
+       
         return (
-          
+            
             <div class = "background">
-                
+    
             <div class = "container">
                 <div class = "container-n">
+                   
                     <h1>Pump Station</h1>
+              
+                        
+                        
+                 
                     <div class = "container-s">
+
+                    <div class = "top-alarm">
+                        <Alarmnoti Alarmprop = {this.state.Alarm}/>
+                    </div>
                         <div class = "panel-1">
                         <Panel pumpNum = "1" keyAPI ={this.state.accessToken} status = {this.state.pump1}  runDry = {this.state.Rundry1} remote = {this.state.Remote1} F2S = {this.state.Fault2S1}/>
                        
                         </div>
                         <div class = "panel-2"> 
                         <Panel pumpNum = "2" keyAPI ={this.state.accessToken}  status = {this.state.pump2} runDry = {this.state.Rundry2} remote = {this.state.Remote2} F2S = {this.state.Fault2S2}/>
+
                         </div>
-                        
-             
+                    </div> 
+
                     </div>   
                      
-                    </div>
+                   
                    
             </div>
+
             <div class = "symbol">
+            
             <div class = "container-pump-status">
+            
              <div class = "border-pump" ><Remote   status = {this.state.pump1}></Remote> </div>
             <div class = "border-pump-2" ><Remote   status = {this.state.pump2}></Remote> </div> 
             </div>
             <div class = "container-pump-flow">
+     
             <div class = "border-flow-panel" ><Flowswitch flow = {this.state.Fsw1}></Flowswitch></div>
             <div class = "border-flow-panel2" ><Flowswitch flow = {this.state.Fsw2}></Flowswitch></div>
             </div>
+        
             </div>
+
             
  
-            
+          
             </div>
-            
+  
+          
             
         )
     }

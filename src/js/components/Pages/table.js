@@ -80,7 +80,7 @@ export default class table extends Component {
               const result = JSON.parse(res.data); 
             if(result.IsSuccess){
                 const alarm = JSON.parse(result.Value);
-                console.log(alarm)
+                
                 //const Result = JSON.parse(alarm.Value); 
                 this.setState({ result : alarm });
             }});

@@ -7,7 +7,7 @@ import Chart from './Chart'
 import classnames from 'classnames';
 import './Assemblypump.css'
 import Table from './table'
-import Alarmnoti from './Alarmnoti';
+
 
 class Assemblypump extends Component {
     constructor(props) {
@@ -74,15 +74,12 @@ class Assemblypump extends Component {
 
                   <div class ="wrapper fadeInDown">
             
-                    <div class = "alarm-panel">
+          
                      
                       <Pumpmoni keytoapi ={key} apiIP = {this.props.IP}  />
                      
-                    
-                    <Alarmnoti/>
                     {/* apiIP = {IP} */}
                     {/* <Pumpmoni keytoapi = {key} /> */}
-                    </div>
                     </div>
 
               </TabPane>

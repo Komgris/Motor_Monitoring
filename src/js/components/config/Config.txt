@@ -1,1 +1,1 @@
-http://192.168.10.42/skapi/SystemAPI
+http://192.168.10.42/api/SystemAPI

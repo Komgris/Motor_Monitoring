@@ -108,6 +108,8 @@ export default class Remote extends Component {
                  return  <div class ="border-remote-blink" style ={{  backgroundColor :`yellow`}}></div>
               case "error" :
                  return  <div class ="border-remote-blink" style ={{  backgroundColor :`grey`}}></div>
+             case null :
+                return  <div class ="border-remote" style ={{  backgroundColor :`grey`}}></div>
             }
     }
 

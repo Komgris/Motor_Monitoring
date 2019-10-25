@@ -10,6 +10,7 @@ class PumpPanel extends Component {
     constructor(props) {
         super(props);
         this.f2s = this.f2s.bind(this);
+        this.Status_text = this.Status_text.bind(this);
         this.toggle = this.toggle.bind(this);
         this.blinkStatus = this.blinkStatus.bind(this);
         this.Rundry_status = this.Rundry_status.bind(this);
@@ -124,12 +125,12 @@ class PumpPanel extends Component {
           
         case "Run":
             return  <div  style ={{ backgroundColor :`#66ff33`}} class="border-noblink"> </div>
-           
         case "Stop":
-            return  <div  style ={{ backgroundColor :`red`}} class="border-noblink"> </div>
-           
+            return  <div  style ={{ backgroundColor :`red`}} class="border-noblink">  </div>    
         case "Fault":
             return  <div  style ={{ backgroundColor :`yellow`}}  class="border-blink"> </div>
+        case null:
+            return  <div  style ={{ backgroundColor :`grey`}}  class="border-noblink"> </div>
            
       }
     }
@@ -141,6 +142,15 @@ class PumpPanel extends Component {
         case false:
             return ""
       
+      }
+    }
+
+    Status_text = () =>{
+      switch(this.props.status){
+        case null:
+            return "null"
+        default: 
+          return this.props.status
       }
     }
     
@@ -235,13 +245,12 @@ class PumpPanel extends Component {
       
 
     render() {
-     
-
       const fault2start = this.f2s();
       const colorwarning = this.blinkStatus();
       const Remote = this.props.remote;
-      const Pumpstatus = this.props.status;
+      const Pumpstatus = this.Status_text()
       const rundry = this.Rundry_status();
+      
 
         return (
             <div class="border-panel" style ={{

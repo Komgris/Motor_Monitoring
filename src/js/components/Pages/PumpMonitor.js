@@ -12,6 +12,7 @@ import Alarmnoti from './Alarmnoti';
     intervalID = 0;
     constructor(props) {
         super(props);
+        this.sendTable = this.sendTable.bind(this);
         this.state ={
             pump1:"",
             Remote1:"",
@@ -41,11 +42,11 @@ import Alarmnoti from './Alarmnoti';
         if (localStorage.getItem('userToken') === null || localStorage.getItem('userToken') === "")
         {   
             this.props.history.push(`/`);
-            console.log(1)
         }
         this.checkToken();
         this.loadData();
         this.intervalID = setInterval(this.loadData.bind(this), 2000);    
+        
     }
     componentWillUnmount(){
         clearInterval(this.intervalID);
@@ -64,6 +65,10 @@ import Alarmnoti from './Alarmnoti';
         }
         console.log(token)
         this.setState((state) => ({ accessToken : token}));
+    }
+
+    sendTable =()=>{
+        this.props.confirm(this.state.Alarm);
     }
 
     async loadData() {
@@ -85,7 +90,7 @@ import Alarmnoti from './Alarmnoti';
                                     var update_status =  JSON.parse(result.Value);
                                     var update_alarm =  JSON.parse(result.Alarm);
 
-                                    
+                                    this.sendTable(this);
                                     this.setState({
                                         Remote1 : update_status.RemoteLocal1,
                                         Fsw1 : update_status.Fsw1,
@@ -100,6 +105,8 @@ import Alarmnoti from './Alarmnoti';
                                         Fault2S2 : update_status.sFault2,
                                         Alarm :  update_alarm
                                       });
+
+                                    
                                 }
                                 
                             }
@@ -123,48 +130,26 @@ import Alarmnoti from './Alarmnoti';
                         
                  
                     <div class = "container-s">
-
-                    <div class = "top-alarm">
-                        <Alarmnoti Alarmprop = {this.state.Alarm}/>
-                    </div>
                         <div class = "panel-1">
-                        <Panel pumpNum = "1" keyAPI ={this.state.accessToken} status = {this.state.pump1}  runDry = {this.state.Rundry1} remote = {this.state.Remote1} F2S = {this.state.Fault2S1}/>
-                       
+                        <Panel pumpNum = "1" keyAPI ={this.state.accessToken} status = {this.state.pump1}  runDry = {this.state.Rundry1} remote = {this.state.Remote1} F2S = {this.state.Fault2S1}/>                    
                         </div>
                         <div class = "panel-2"> 
                         <Panel pumpNum = "2" keyAPI ={this.state.accessToken}  status = {this.state.pump2} runDry = {this.state.Rundry2} remote = {this.state.Remote2} F2S = {this.state.Fault2S2}/>
-
                         </div>
                     </div> 
-
-                    </div>   
-                     
-                   
-                   
+                    </div>       
             </div>
-
-            <div class = "symbol">
-            
+            <div class = "symbol">   
             <div class = "container-pump-status">
-            
              <div class = "border-pump" ><Remote   status = {this.state.pump1}></Remote> </div>
             <div class = "border-pump-2" ><Remote   status = {this.state.pump2}></Remote> </div> 
             </div>
             <div class = "container-pump-flow">
-     
             <div class = "border-flow-panel" ><Flowswitch flow = {this.state.Fsw1}></Flowswitch></div>
             <div class = "border-flow-panel2" ><Flowswitch flow = {this.state.Fsw2}></Flowswitch></div>
+            </div>    
             </div>
-        
             </div>
-
-            
- 
-          
-            </div>
-  
-          
-            
         )
     }
 }

@@ -133,10 +133,10 @@ export default class table extends Component {
         if(this.state.result == "")
         {
             htmlTable = "";
-            console.log(1);
+            
         }
         else{
-            console.log(this.state.result);
+           
             htmlTable = <div class="border-table">
             <table class="table table-striped">
                 <thead class="thead-dark">

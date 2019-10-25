@@ -1,0 +1,31 @@
+#scrolltable { 
+    margin: 5px 5px 5px 5px;
+    height: 120px; 
+    overflow: auto;
+}
+#scrolltable th div {
+    position: absolute; 
+    margin-top: -20px;
+}
+.table-alarm-noti{
+    border: 3px solid grey;
+}
+.btn-blink{
+
+        text-decoration: blink;
+        -webkit-animation-name: blinker;
+        -webkit-animation-duration: 1s;
+        -webkit-animation-iteration-count:infinite;
+        -webkit-animation-timing-function:ease-in-out;
+        -webkit-animation-direction: alternate;
+        border-radius: 5px 5px 5px 5px;
+        background-color: red;
+        width: 100%;
+        color: yellow;
+        font-weight: 500;
+      
+}
+@-webkit-keyframes blinker {
+    from {opacity: 1.0;}
+    to {opacity: 0.0;}
+  }

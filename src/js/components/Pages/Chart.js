@@ -78,8 +78,7 @@ export default class Chart extends Component {
             const pumpOne = jso2.filter( p => p.PumpId == 1 );
             const pumpTwo = jso2.filter( p => p.PumpId == 2 );
 
-            console.log(pumpOne);
-            console.log(pumpTwo);
+            
 
             const arr_time =  jso2.map((time) =>{
                 return time.Time;

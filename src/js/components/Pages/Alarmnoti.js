@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './Alarmnoti.css'
 import { Collapse, Button,Badge, CardBody, Card } from 'reactstrap';
 export default class Alarmnoti extends Component {
 
@@ -39,10 +40,22 @@ export default class Alarmnoti extends Component {
     render() {
        //console.log(this.props.Alarmprop)
        var AlarmHtml = ""
+       var btnBlink =""
        var count = 0
-        if(this.props.Alarmprop != ""){
-
-           AlarmHtml =  <table class="table table-striped table-dark">
+        if(this.props.Alarmprop != "" ){
+           count = Object.keys(this.props.Alarmprop).length;
+           if(count > 0){
+            btnBlink = <button class="btn-blink" color="primary"  onClick={() => { this.setState({ btnDropright: !this.state.btnDropright }); }}  >
+            Alarm <Badge color="secondary">{count}</Badge></button>
+           }
+           else{
+            btnBlink = <button  color="primary"  onClick={() => { this.setState({ btnDropright: !this.state.btnDropright }); }}  >
+            Alarm <Badge color="secondary">{count}</Badge></button>
+           }
+           AlarmHtml =  
+           <div class ="table-alarm-noti">
+           <div id="scrolltable">
+           <table class="table table-striped table-dark">
            <thead>
            <tr> {this.getHeader()} </tr>
            </thead>
@@ -50,16 +63,17 @@ export default class Alarmnoti extends Component {
                    {this.getRowsData()}
            </tbody>
            </table>
-
-             count = Object.keys(this.props.Alarmprop).length;
-
+           </div>
+           </div>
+        }
+        else{
+            AlarmHtml = "No Record"
         }
         
         return (
-            <div  >
-                 <Button color="primary"  onClick={() => { this.setState({ btnDropright: !this.state.btnDropright }); }}  >
-                    Alarm <Badge color="secondary">{count}</Badge>
-                </Button>
+            <div >
+
+                {btnBlink}
                 <Collapse isOpen={this.state.btnDropright} >
                 <Card>
                 <CardBody>
@@ -69,6 +83,10 @@ export default class Alarmnoti extends Component {
             </Collapse>
                
             </div>
+            // <div>
+            //     <h5> Alarm <Badge color="secondary">{count}</Badge></h5>
+            //     {AlarmHtml}
+            // </div>
         )
     }
 }

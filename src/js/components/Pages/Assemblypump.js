@@ -7,6 +7,7 @@ import Chart from './Chart'
 import classnames from 'classnames';
 import './Assemblypump.css'
 import Table from './table'
+import Alarmnoti from './Alarmnoti';
 
 
 class Assemblypump extends Component {
@@ -17,9 +18,15 @@ class Assemblypump extends Component {
         this.state = {
           activeTab: '1',
           logStatus:'',
-          IP:''
+          IP:'',
+          alarm:''
         };
       }
+
+      onConfirm(order) {
+        this.setState({ alarm : order });
+      }
+
 
       toggle(tab) {
         if (this.state.activeTab !== tab) {
@@ -30,9 +37,9 @@ class Assemblypump extends Component {
       }
     render() {
       const key = this.props.sendApi;
-      
         return (
-            <div>          
+            <div>
+            <Alarmnoti Alarmprop={this.state.alarm}/>       
             <Nav tabs>
               <NavItem>
                 <NavLink
@@ -67,7 +74,6 @@ class Assemblypump extends Component {
                   ALARM HISTORY
                 </NavLink>
               </NavItem>
-             
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
               <TabPane tabId="1">
@@ -76,7 +82,7 @@ class Assemblypump extends Component {
             
           
                      
-                      <Pumpmoni keytoapi ={key} apiIP = {this.props.IP}  />
+                      <Pumpmoni keytoapi ={key} apiIP = {this.props.IP}  confirm={this.onConfirm.bind(this)} />
                      
                     {/* apiIP = {IP} */}
                     {/* <Pumpmoni keytoapi = {key} /> */}
@@ -100,7 +106,6 @@ class Assemblypump extends Component {
                 <Table keytoapi ={key} apiIP = {this.props.IP}/>
                 {/* apiIP = {IP}  */}
                     {/* <Location keytoapi = {key} /> */}
-              
               </TabPane>
             </TabContent>
           </div>

@@ -69,6 +69,7 @@ export default class table extends Component {
           const body ={ 
                 TimeBegin:this.convertDate(this.state.dateStart),
                 TimeEnd:this.convertDate(this.state.dateEnd),
+
           };
           
           // Axios.put(`${this.state.API}/Pump/AlarmTable/${this.state.accessToken}`
@@ -80,6 +81,7 @@ export default class table extends Component {
               const result = JSON.parse(res.data); 
             if(result.IsSuccess){
                 const alarm = JSON.parse(result.Value);
+                console.log(this.convertDate(this.state.dateStart))
                 
                 //const Result = JSON.parse(alarm.Value); 
                 this.setState({ result : alarm });

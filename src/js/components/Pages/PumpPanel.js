@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem,Modal, ModalHeader, ModalBody, ModalFooter,Button,Badge  } from 'reactstrap';
-// import txt from '!!raw-loader!./js/components/config/Config.txt'
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem,Modal, ModalBody, ModalFooter,Button,Badge  } from 'reactstrap';
 import txt from '!!raw-loader!../config/Config.txt'
 import Axios from 'axios';
+import MaterialUIPickers from './Timepicker'
+import Popup from "reactjs-popup";
 import './PumpPanel.css'
 
 class PumpPanel extends Component {
@@ -16,11 +17,16 @@ class PumpPanel extends Component {
         this.Rundry_status = this.Rundry_status.bind(this);
         this.toggle_modal_start = this.toggle_modal_start.bind(this);
         this.toggle_modal_stop= this.toggle_modal_stop.bind(this);
+        this.Modechange = this.Modechange.bind(this);
+        this.ModeTimer = this.ModeTimer.bind(this);
+
 
         this.state = {
           modal_start: false,
           modal_stop: false,
           API: txt,
+          back_Start:"",
+          back_Stop:"",
           dropdownOpen: false,
           pumpnum: this.props.pumpNum,
           
@@ -34,6 +40,16 @@ class PumpPanel extends Component {
           Fsw:"",
           Rundry:"",
         };
+      }
+      
+      onCallbackstart(Tstart) {
+        
+        this.setState({back_Start:Tstart})
+        console.log(this.state.back_Start);
+      }
+      onCallbackstop(Tstop) {
+        this.setState({back_Stop:Tstop})
+        console.log(this.state.back_Stop);
       }
 
       toggle() {
@@ -51,65 +67,6 @@ class PumpPanel extends Component {
           modal_stop: !prevState.modal_stop
         }));
       }
-    // componentDidUpdate(prevState){
-    //   if(prevState.colorwarning != this.state.colorwarning){
-    //     this.blinkWarning();
-    //   }
-    // }
-
-    
-    componentDidMount()
-      {
-          // this.setState((state) => ({ Remote : this.props.remote,
-          //   currentPumpstatus : this.props.status
-          // }));
-          // // this.loadData();
-          // // setInterval(this.loadData.bind(this), 2000);   
-          // this.blinkStatus(); 
-          // this.Rundry_status();
-         
-      }
-  //   async loadData() {
-  //     {
-  //         Axios.get(`${this.state.API}/Pump/WebUpdateStatus/${this.state.pumpnum}/${this.state.accessToken}`)
-  //         //Axios.get(`http://192.168.10.36/skapi/SystemAPI/Pump/RestAPI`)
-  //         .then(res => {
-  //             const result = JSON.parse(res.data);
-  //             if(result.IsSuccess)
-  //             {
-                
-  //                 var update_status =  JSON.parse(result.Value);
-                  
-  //                 //const aa = {"IsSuccess":true,"Value":{"RemoteLocal":"Remote","Fsw":false,"Rundry":false,"PumpStart":true,"PumpStop":false}}
-
-  //                const colorFsw = (fsw) => {
-  //                 switch(fsw){
-  //                   case false :
-  //                      return "secondary";
-  //                   case true :
-  //                      return  "success"
-  //                 }
-  //                }
-
-  //                const IsRundry = (is) => {
-  //                 switch(is){
-  //                   case false :
-  //                      return '';
-  //                   case true :
-  //                      return <Badge color="danger">Rundry</Badge>
-  //                 }
-  //                }
-  //                 this.setState({
-  //                   Remote : update_status.RemoteLocal,
-  //                   Fsw : colorFsw(update_status.Fsw),
-  //                   Rundry  : IsRundry(update_status.Rundry)
-  //                 });
-  //             }
-              
-  //         })
-  //         console.log("loop")
-  //       }
-  //  }
   f2s = () =>{
     switch(this.props.F2S){
       case true:
@@ -145,6 +102,36 @@ class PumpPanel extends Component {
       }
     }
 
+    Modechange = () =>{
+      switch(this.props.Pmode){
+        case true:
+            return <button onClick={this.ToggleMode.bind(this)} type="button" class="btn btn-success block" aria-label="Left Align">
+            AUTO
+           </button>
+        case false:
+            return <button onClick={this.ToggleMode.bind(this)} type="button" class="btn btn-secondary block" aria-label="Left Align">
+           MANUAL
+           </button>
+      
+      }
+    }
+    ModeTimer = () =>{
+      switch(this.props.Pmode){
+        case true:
+            return <Popup
+            trigger={<button type="button" class="btn btn-success block"> SET TIME </button>}
+            closeOnDocumentClick
+          >
+           <MaterialUIPickers  timeFormat ={"Time Start"} pumpid = {this.props.pumpNum} timeback={this.onCallbackstart.bind(this)}/>
+           <MaterialUIPickers  timeFormat ={"Time Stop"} pumpid = {this.props.pumpNum} timeback={this.onCallbackstop.bind(this)}/>
+           <Button color="warning" onClick={this.Settimer.bind(this)}  style = {{ width :'100%' }} >Start Timer</Button>
+          </Popup>
+          
+        case false:
+            return ""
+      }
+    }
+
     Status_text = () =>{
       switch(this.props.status){
         case null:
@@ -153,41 +140,6 @@ class PumpPanel extends Component {
           return this.props.status
       }
     }
-    
-
-    // checkToken =()=>{
-    //     var token;
-    //     if(this.props.keyAPI === "")
-    //     {
-    //        token =  localStorage.getItem('userToken');
-         
-    //     }
-    //     else
-    //     {
-    //        token =  this.props.keyAPI 
-          
-    //     }
-       
-    //     this.setState((state) => ({ accessToken : token}));
-    //     Axios.get(`${this.state.API}/Pump/ReadStatus/${this.state.pumpnum}/${token}`)
-    //    .then(res => {
-    //     const status = JSON.parse(res.data);
-       
-    //         if(status.Value === "Access denied!")
-    //         {
-
-    //           localStorage.setItem('userToken', "");
-    //           this.props.history.push(`/`);
-              
-    //         }
-    //         else
-    //         {
-    //           // this.setState({currentPumpstatus : status});
-    //           this.setState((state) => ({ currentPumpstatus : status}));
-    //           this.blinkWarning();
-    //         }
-    //   })
-    // }
     Pumpreset(){
       Axios.get(`${this.state.API}/Pump/Reset/${this.props.pumpNum}/${this.props.keyAPI}`)
       this.Pumpget()
@@ -196,22 +148,38 @@ class PumpPanel extends Component {
     PumpStart(){
         Axios.get(`${this.state.API}/Pump/Start/${this.props.pumpNum}/${this.props.keyAPI}`)
         this.Pumpget()
-        // .then(res => {
-        //   this.Pumpget()
-        // })       
+      
       }
 
       PumpStop(){
         Axios.get(`${this.state.API}/Pump/Stop/${this.props.pumpNum}/${this.props.keyAPI}`)
         this.Pumpget()
-        // .then(res => {
-        //   this.Pumpget()
-        // })
+
       }
+
+      Settimer(){
+        var Start = this.state.back_Start.split(":");
+        var Stop = this.state.back_Stop.split(":");
+        //http://192.168.10.41/skrapi/SystemAPI/Pump/SetTime/skr/1/1/1/1/1
+        Axios.get(`${this.state.API}/Pump/SetTime/${this.props.keyAPI}/${this.props.pumpNum}/${Start[0]}/${Start[1]}/${Stop[0]}/${Stop[1]}`)
+        .then(res => {console.log(res.data)})
+      }
+
+      ToggleMode(){
+        var PumpMode
+        if(this.props.Pmode){
+          PumpMode ="Manual"
+        }
+        else{
+          PumpMode ="Auto"
+        }
+        console.log(PumpMode)
+        Axios.get(`${this.state.API}/Pump/Mode/${this.props.keyAPI}/${this.props.pumpNum}/${PumpMode}`)
+        .then(res => {console.log(res.data)})
+      }
+
       
     Pumpget =() =>{
-        // this.loadData();
-        // this.checkExpried();
         if(this.state.modal_start)
         {
           this.setState(prevState => ({
@@ -225,31 +193,15 @@ class PumpPanel extends Component {
           }));
         }
     }
-      
-      // checkExpried =() =>{
-      //   Axios.get(`${this.state.API}/Pump/ReadStatus/${this.state.pumpnum}/${this.state.accessToken}`)
-      //   .then(res => {
-      //       const status = JSON.parse(res.data);
-      //       if(status.Value === "Access denied!")
-      //       {
-      //         localStorage.setItem('userToken', "");
-      //         this.props.history.push(`/`);
-      //       }
-      //       else{
-      //         this.blinkWarning(); 
-              
-      //       }
-           
-      //     })
-      // }
-      
-
     render() {
+
       const fault2start = this.f2s();
       const colorwarning = this.blinkStatus();
       const Remote = this.props.remote;
       const Pumpstatus = this.Status_text()
       const rundry = this.Rundry_status();
+      const mode = this.Modechange();
+      const popUp = this.ModeTimer();
       
 
         return (
@@ -266,7 +218,8 @@ class PumpPanel extends Component {
             <div class = "content-border"> 
 
           <div class = "status-warning"> 
-
+         
+              
               <h4><Badge color="primary">{Remote}</Badge></h4>
               <h4><div class ="blink">{rundry}</div></h4>
               <h4><div class ="blink">{fault2start}</div></h4>
@@ -275,7 +228,7 @@ class PumpPanel extends Component {
                 <div class = "btnContain">            
                 <Dropdown isOpen={this.state.btnDropright} toggle={() => { this.setState({ btnDropright: !this.state.btnDropright }); }} style ={{    
                 }}>
-                <DropdownToggle caret>
+                <DropdownToggle caret color="primary">
                 PUMP  {this.props.pumpNum}
                 </DropdownToggle>
                 <DropdownMenu>
@@ -304,12 +257,6 @@ class PumpPanel extends Component {
                     <Button color="secondary" onClick={this.toggle_modal_stop}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
-                 {/* -----------------------------------STOP-------------------------------------*/}
-
-
-
-
-                {/* <DropdownItem onClick = {this.PumpStop.bind(this)} >STOP</DropdownItem> */}
 
                 </DropdownMenu>
                 </Dropdown>
@@ -317,19 +264,9 @@ class PumpPanel extends Component {
                 <button  type="button" class="btn btn-warning block" aria-label="Left Align"  onClick = {this.Pumpreset.bind(this)} >
                 RESET
                 </button>
+                {mode}
+                {popUp}
                 </div>
-                {/* <p>{this.state.accessToken}</p> */}
-                
-                    {/* <div class = "dropdown">
-                    <button   class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        PUMP
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a style= {btn_drop_item} class = "dropdown-item" >START</a>
-                        <a style= {btn_drop_item} class = "dropdown-item" >STOP</a>
-                    </div>
-                    </div> */}
-                
             </div>
             </div>
          

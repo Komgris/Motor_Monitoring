@@ -26,7 +26,9 @@ import Alarmnoti from './Alarmnoti';
             API:txt,
             Fault2S1:"",
             Fault2S2:"",
-            Alarm:""
+            Alarm:"",
+            Mode1:"",
+            Mode2:""
         }
     }
     // if (localStorage.getItem('userToken') === null || localStorage.getItem('userToken') === "")
@@ -97,7 +99,9 @@ import Alarmnoti from './Alarmnoti';
                                         Rundry1  : update_status.Rundry1,
                                         pump1  : update_status.PumpStatus1,
                                         Fault2S1 : update_status.sFault1,
-                                        
+                                        Mode1 : update_status.Mode1,
+                                        Mode2 : update_status.Mode2,
+
                                         Remote2 : update_status.RemoteLocal2,
                                         Fsw2 : update_status.Fsw2,
                                         Rundry2  : update_status.Rundry2,
@@ -131,10 +135,10 @@ import Alarmnoti from './Alarmnoti';
                  
                     <div class = "container-s">
                         <div class = "panel-1">
-                        <Panel pumpNum = "1" keyAPI ={this.state.accessToken} status = {this.state.pump1}  runDry = {this.state.Rundry1} remote = {this.state.Remote1} F2S = {this.state.Fault2S1}/>                    
+                        <Panel pumpNum = "1" keyAPI ={this.state.accessToken} status = {this.state.pump1}  runDry = {this.state.Rundry1} remote = {this.state.Remote1} F2S = {this.state.Fault2S1}  Pmode = {this.state.Mode1}/>                    
                         </div>
                         <div class = "panel-2"> 
-                        <Panel pumpNum = "2" keyAPI ={this.state.accessToken}  status = {this.state.pump2} runDry = {this.state.Rundry2} remote = {this.state.Remote2} F2S = {this.state.Fault2S2}/>
+                        <Panel pumpNum = "2" keyAPI ={this.state.accessToken}  status = {this.state.pump2} runDry = {this.state.Rundry2} remote = {this.state.Remote2} F2S = {this.state.Fault2S2}  Pmode = {this.state.Mode2}/>
                         </div>
                     </div> 
                     </div>       

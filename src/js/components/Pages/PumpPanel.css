@@ -59,6 +59,7 @@ a{
   .btnContain{
     display:flex;
     font-size: 15px;
+    
   }
   .content-border{
     margin: 7px 7px 7px 7px; 
@@ -67,3 +68,7 @@ a{
   .border-panel{
     border-radius: 10px 10px 10px 10px;
   }
+  
+
+  
+ 

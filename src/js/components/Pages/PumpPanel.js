@@ -45,11 +45,11 @@ class PumpPanel extends Component {
       onCallbackstart(Tstart) {
         
         this.setState({back_Start:Tstart})
-        console.log(this.state.back_Start);
+        
       }
       onCallbackstop(Tstop) {
         this.setState({back_Stop:Tstop})
-        console.log(this.state.back_Stop);
+       
       }
 
       toggle() {
@@ -116,15 +116,15 @@ class PumpPanel extends Component {
       }
     }
     ModeTimer = () =>{
+
       switch(this.props.Pmode){
         case true:
-            return <Popup
-            trigger={<button type="button" class="btn btn-success block"> SET TIME </button>}
-            closeOnDocumentClick
-          >
+    return <Popup trigger={<button type="button" class="btn btn-success block"> SET TIME </button>}  closeOnDocumentClick>
+            <div>
            <MaterialUIPickers  timeFormat ={"Time Start"} pumpid = {this.props.pumpNum} timeback={this.onCallbackstart.bind(this)}/>
            <MaterialUIPickers  timeFormat ={"Time Stop"} pumpid = {this.props.pumpNum} timeback={this.onCallbackstop.bind(this)}/>
            <Button color="warning" onClick={this.Settimer.bind(this)}  style = {{ width :'100%' }} >Start Timer</Button>
+           </div>
           </Popup>
           
         case false:
@@ -162,9 +162,8 @@ class PumpPanel extends Component {
         var Stop = this.state.back_Stop.split(":");
         //http://192.168.10.41/skrapi/SystemAPI/Pump/SetTime/skr/1/1/1/1/1
         Axios.get(`${this.state.API}/Pump/SetTime/${this.props.keyAPI}/${this.props.pumpNum}/${Start[0]}/${Start[1]}/${Stop[0]}/${Stop[1]}`)
-        .then(res => {console.log(res.data)})
+        //.then(res => {console.log(res.data)})
       }
-
       ToggleMode(){
         var PumpMode
         if(this.props.Pmode){
@@ -174,7 +173,9 @@ class PumpPanel extends Component {
           PumpMode ="Auto"
         }
         console.log(PumpMode)
-        Axios.get(`${this.state.API}/Pump/Mode/${this.props.keyAPI}/${this.props.pumpNum}/${PumpMode}`)
+        const api = `${this.state.API}/Pump/Mode/${this.props.keyAPI}/${this.props.pumpNum}/${PumpMode}`
+        console.log(api);
+        Axios.get(api)
         .then(res => {console.log(res.data)})
       }
 
@@ -221,11 +222,13 @@ class PumpPanel extends Component {
          
               
               <h4><Badge color="primary">{Remote}</Badge></h4>
+              { this.props.Pmode &&  <h4><Badge color="info">Start  { this.props.timestart }</Badge><Badge color="info">Stop  { this.props.timestop }</Badge></h4>}
               <h4><div class ="blink">{rundry}</div></h4>
               <h4><div class ="blink">{fault2start}</div></h4>
               </div>
                 <a>Status :  {Pumpstatus} </a>
-                <div class = "btnContain">            
+                <div class = "btnContain">
+                
                 <Dropdown isOpen={this.state.btnDropright} toggle={() => { this.setState({ btnDropright: !this.state.btnDropright }); }} style ={{    
                 }}>
                 <DropdownToggle caret color="primary">
@@ -261,15 +264,15 @@ class PumpPanel extends Component {
                 </DropdownMenu>
                 </Dropdown>
                
-                <button  type="button" class="btn btn-warning block" aria-label="Left Align"  onClick = {this.Pumpreset.bind(this)} >
+                <button id="reset-btn" type="button" class="btn btn-warning block" aria-label="Left Align"  onClick = {this.Pumpreset.bind(this)} >
                 RESET
                 </button>
-                {mode}
-                {popUp}
+                  {mode}
+                  {popUp}
+                </div>
                 </div>
             </div>
-            </div>
-         
+            
         )
     }
 }

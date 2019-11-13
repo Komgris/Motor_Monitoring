@@ -10,6 +10,7 @@ class Login extends Component {
         this.state = {
             username:'',
             password:'',
+            notiPassword:'',
             result:[]
         }
 
@@ -22,17 +23,40 @@ class Login extends Component {
 
             if(value.IsSuccess)
             {
-                this.setState({ result : value});
+                this.setState({ result : value,
+                notiPassword: ''  });
                 localStorage.setItem('userToken', this.state.result.Value);
                 this.props.parentCall(this.state.result.Value);
-                this.props.history.push('/pump');
+                this.toHome();
+            }
+            else{
+                this.setState({ notiPassword : 'Invalid Password or Username'});
             }
         })
         this.setState({username: ''})
         this.setState({password: ''})
     }
+    toHome=()=>{
+        
+        
+        this.props.history.push('/pump');
+    }
 
-
+    componentDidMount(){
+        // if((typeof localStorage.getItem('userToken') != null))
+        // {
+        //     this.toHome();
+        // }
+        //console.log(localStorage.getItem('userToken'))
+        if (localStorage.getItem('userToken') != null )
+        {
+            this.toHome();
+        }
+        //console.log(localStorage.getItem('userToken'))
+        // if (localStorage.getItem('userToken') != null || localStorage.getItem('userToken') != ""){
+        //     this.toHome();
+        // }
+    }
 
     onChange = (e) => this.setState({[e.target.name] : e.target.value });
 
@@ -44,12 +68,16 @@ class Login extends Component {
                         <img src={logo} id="icon" alt="User Icon" />
                     </div>
 
-                    <form onSubmit = {this.onSubmit} >
+                        <form onSubmit = {this.onSubmit} >
                         <h2>Pump Control</h2>
                         <input type="text" id="login" class="fadeIn second" name="username" placeholder="username" onChange={this.onChange} value ={this.state.username} />
                         <br/>
                         
                         <input type="password" id="password" class="fadeIn third" name="password" placeholder="password" onChange={this.onChange} value ={this.state.password} />
+                        <div class ="textNotiLogin">
+                        {this.state.notiPassword}
+                        </div>
+                        
                         <input type="submit" class="fadeIn fourth" value="Log In"/>
                     </form>
 

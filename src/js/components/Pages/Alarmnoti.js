@@ -57,7 +57,7 @@ export default class Alarmnoti extends Component {
            <div id="scrolltable">
            <table class="table table-striped table-dark">
            <thead>
-           <tr> {this.getHeader()} </tr>
+           <tr>{this.getHeader()}</tr>
            </thead>
            <tbody>
                    {this.getRowsData()}

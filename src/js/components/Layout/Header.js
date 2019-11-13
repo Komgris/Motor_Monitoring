@@ -14,7 +14,9 @@ class Header extends Component {
     };
   }
 
-
+  clearLocal =()=>{
+    localStorage.removeItem('userToken');
+  }
   checkState = () =>{
     if(this.props.location.pathname === "/pump")
     {
@@ -22,6 +24,7 @@ class Header extends Component {
     }
     else{
       this.setState({loginState : "LOG IN"})
+
     }
   }
 
@@ -46,7 +49,7 @@ class Header extends Component {
           <img src={logo} width="300" height="50" alt=""/>
           </NavbarBrand>
             <NavItem>
-              <NavLink  href="/">{this.state.loginState}</NavLink>
+              <NavLink  href="/" onClick={this.clearLocal.bind(this)} >{this.state.loginState}</NavLink>
               {/* <NavLink href="/" active>LOG IN</NavLink> */}
             </NavItem>
               <Collapse isOpen={!this.state.collapsed} navbar>

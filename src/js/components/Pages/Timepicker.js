@@ -25,8 +25,9 @@ export default function MaterialUIPickers(props) {
     }).format(date)
     return newFormat
   }
-  useEffect(()=>{
-    //sendtime(changeFormat(date))
+  useEffect((date)=>{
+    setSelectedDate(date);    
+    sendtime(changeFormat(date))
   },[]) 
 
   const sendtime =(date)=>{

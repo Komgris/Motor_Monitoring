@@ -3,7 +3,6 @@
   
   body {
     font-family: "Poppins", sans-serif;
-    height: 100vh;
   }
   
   a {
@@ -244,7 +243,10 @@
   .underlineHover:hover:after{
     width: 100%;
   }
-  
+  .textNotiLogin{
+    font-size: 15px;
+    color: red;
+  }
   
   
   /* OTHERS */

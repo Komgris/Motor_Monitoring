@@ -142,7 +142,7 @@ export default class table extends Component {
             htmlTable = <div class="border-table">
             <table class="table table-striped">
                 <thead class="thead-dark">
-                    <tr> {this.getHeader()} </tr>
+                    <tr>{this.getHeader()}</tr>
                 </thead>
                 <tbody>
                     {this.getRowsData()}

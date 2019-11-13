@@ -195,6 +195,7 @@ export default class Chart extends Component {
                      display: true,
                      text: 'PUMP STATUS HISTORY'
                  },
+                 
                  responsiveAnimationDuration:2000
              }
              }

@@ -33,6 +33,9 @@ import Alarmnoti from './Alarmnoti';
             timeStop1:"",
             timeStart2:"",
             timeStop2:"",
+            emergency:"",
+            reSet1:"",
+            reSet2:"",
         }
     }
 
@@ -49,7 +52,7 @@ import Alarmnoti from './Alarmnoti';
         else{
             this.checkToken();
             this.loadData();
-            this.intervalID = setInterval(this.loadData.bind(this), 2000);    
+            this.intervalID = setInterval(this.loadData.bind(this), 2500);    
         }
     }
     componentWillUnmount(){
@@ -103,8 +106,8 @@ import Alarmnoti from './Alarmnoti';
                                     //console.log(this.state.accessToken)
                                     var update_status =  JSON.parse(result.Value);
                                     var update_alarm =  JSON.parse(result.Alarm);
-                                    console.log( "status"+ update_status.Mode1 + update_status.Mode2);
-
+                                   
+                                    console.log( "status"+ update_status.IsReset1 + update_status.IsReset2);
                                     this.sendTable(this);
                                     this.setState({
                                         Remote1 : update_status.RemoteLocal1,
@@ -114,12 +117,14 @@ import Alarmnoti from './Alarmnoti';
                                         Fault2S1 : update_status.sFault1,
                                         Mode1 : update_status.Mode1,
                                         Mode2 : update_status.Mode2,
+                                        emergency : update_status.Emer,
+                                        reSet1 : update_status.IsReset1,
+                                        reSet2 : update_status.IsReset2,
 
                                         timeStart1 : this.SplitText(update_status.TimeStart1),
                                         timeStop1 : this.SplitText(update_status.TimeStop1),
                                         timeStart2 : this.SplitText(update_status.TimeStart2),
                                         timeStop2 : this.SplitText(update_status.TimeStop2),
-                                        
 
                                         Remote2 : update_status.RemoteLocal2,
                                         Fsw2 : update_status.Fsw2,
@@ -127,7 +132,6 @@ import Alarmnoti from './Alarmnoti';
                                         pump2  : update_status.PumpStatus2,
                                         Fault2S2 : update_status.sFault2,
                                         Alarm :  update_alarm
-
                                       });
                                 }
                             }
@@ -139,7 +143,7 @@ import Alarmnoti from './Alarmnoti';
     render() {
        
         return (
-            
+            <div class = "mainLayout">
             <div class = "background">
     
             <div class = "container">
@@ -149,17 +153,22 @@ import Alarmnoti from './Alarmnoti';
               
                         
                         
-                 
-                    <div class = "container-s">
+                { this.state.emergency ?   <div class="emergency blink"> <h1>EMERGENCY</h1></div>  :
+
+                        <div class = "container-s">
                         <div class = "panel-1">
-                        <Panel pumpNum = "1" keyAPI ={this.state.accessToken} status = {this.state.pump1}  runDry = {this.state.Rundry1} remote = {this.state.Remote1} F2S = {this.state.Fault2S1}  Pmode = {this.state.Mode1} timestart = {this.state.timeStart1} timestop = {this.state.timeStop1} />                    
+                        <Panel pumpNum = "1" keyAPI ={this.state.accessToken} status = {this.state.pump1}  runDry = {this.state.Rundry1} remote = {this.state.Remote1} F2S = {this.state.Fault2S1}  Pmode = {this.state.Mode1} timestart = {this.state.timeStart1} timestop = {this.state.timeStop1} reset = {this.state.reSet1}  />                    
                         </div>
                         <div class = "panel-2"> 
-                        <Panel pumpNum = "2" keyAPI ={this.state.accessToken}  status = {this.state.pump2} runDry = {this.state.Rundry2} remote = {this.state.Remote2} F2S = {this.state.Fault2S2}  Pmode = {this.state.Mode2} timestart = {this.state.timeStart2} timestop = {this.state.timeStop2} />
+                        <Panel pumpNum = "2" keyAPI ={this.state.accessToken}  status = {this.state.pump2} runDry = {this.state.Rundry2} remote = {this.state.Remote2} F2S = {this.state.Fault2S2}  Pmode = {this.state.Mode2} timestart = {this.state.timeStart2} timestop = {this.state.timeStop2} reset = {this.state.reSet2} />
                         </div>
-                    </div> 
+                </div>  }
+
+
                     </div>       
             </div>
+            { this.state.emergency ?  null :
+
             <div class = "symbol">   
             <div class = "container-pump-status">
              <div class = "border-pump" ><Remote   status = {this.state.pump1}></Remote> </div>
@@ -169,6 +178,8 @@ import Alarmnoti from './Alarmnoti';
             <div class = "border-flow-panel" ><Flowswitch flow = {this.state.Fsw1}></Flowswitch></div>
             <div class = "border-flow-panel2" ><Flowswitch flow = {this.state.Fsw2}></Flowswitch></div>
             </div>    
+            </div> }
+
             </div>
             </div>
         )

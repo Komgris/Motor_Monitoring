@@ -264,9 +264,10 @@ class PumpPanel extends Component {
                 </DropdownMenu>
                 </Dropdown>
                
+                { this.props.reset && 
                 <button id="reset-btn" type="button" class="btn btn-warning block" aria-label="Left Align"  onClick = {this.Pumpreset.bind(this)} >
                 RESET
-                </button>
+                </button> }
                   {mode}
                   {popUp}
                 </div>

@@ -17,7 +17,6 @@ export default class App extends Component {
 
     componentDidMount(){
        this.setState({ textIP : txt })
-       console.log(txt)
     }
 
     callbackFunction = ( key ) =>{

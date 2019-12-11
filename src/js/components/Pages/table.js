@@ -7,8 +7,6 @@ import DatePicker from 'react-datetime-picker';
 
 export default class table extends Component {
 
-  
-
     constructor(props){
         super(props);
         this.getHeader = this.getHeader.bind(this);
@@ -56,55 +54,24 @@ export default class table extends Component {
             const token = this.props.keytoapi;
            this.setState({ accessToken : token});
         }
-
-        //this.query();
     }
     convertDate =(day)=>{
-        var dateold = new Intl.DateTimeFormat('en-GB').format(day);
-        return dateold;
+        var date = new Intl.DateTimeFormat('en-GB').format(day);
+        return date;
     }
-    // TimeBegin:this.convertDate(this.state.dateStart),
-    //             TimeEnd:this.convertDate(this.state.dateEnd),
+    incrementDate=(day)=>{
+        var dt = new Date(day);
+        dt.setDate(dt.getDate()+1);
+        return dt;
+    }
         query =()=>{
-          const body ={ 
-                TimeBegin:this.convertDate(this.state.dateStart),
-                TimeEnd:this.convertDate(this.state.dateEnd),
-
-          };
-          
-          // Axios.put(`${this.state.API}/Pump/AlarmTable/${this.state.accessToken}`
-          // Axios.get(`${this.state.API}/Pump/AlarmTable/skr`, { body })
-          Axios.get(`${this.state.API}/Pump/TestAlarmTable/skr/${this.convertDate(this.state.dateStart)}/${this.convertDate(this.state.dateEnd)}`)
+          Axios.get(`${this.state.API}/Pump/TestAlarmTable/skr/${this.convertDate(this.state.dateStart)}/${this.convertDate(this.incrementDate(this.state.dateEnd))}`)
           .then(res => {
-        //     { console.log(res.data) })
-        //   console.log(this.convertDate(this.state.dateStart) + this.convertDate(this.state.dateEnd))
               const result = JSON.parse(res.data); 
             if(result.IsSuccess){
                 const alarm = JSON.parse(result.Value);
-                console.log(this.convertDate(this.state.dateStart))
-                
-                //const Result = JSON.parse(alarm.Value); 
                 this.setState({ result : alarm });
             }});
-
-
-        //   const start = this.convertDate(this.state.dateStart);
-        //   const end = this.convertDate(this.state.dateEnd);
-          
-        //   console.log(this.convertDate(this.state.dateStart));
-        //   console.log(this.convertDate(this.state.dateEnd));
-           
-            //Axios.get(`${this.state.API}/Pump/AlarmTable/skr/${this.state.dateStart}/${this.state.dateEnd}`)
-           
-            // fetch('http://192.168.10.42/skapi/SystemAPI/Pump/AlarmTable', {
-            //     method: 'POST',
-            //     headers: {
-            //     'Accept': 'application/json',
-            //     'Content-Type': 'application/json'
-            //     },
-            //     body: {body}
-            // });
-     
         }
 
  
@@ -175,11 +142,7 @@ export default class table extends Component {
             <button  type="button" id="center" class="btn btn-primary btn-lg " style ={{ width : "20%" }} onClick = {this.query.bind(this)}><a>Search</a> </button>
             </div>
             {htmlTable}
-          
-            {/* <JsonToTable json={this.state.result} /> */}
-            
             </div> 
-       
         )
     }
 }

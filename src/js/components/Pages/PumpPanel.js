@@ -160,9 +160,7 @@ class PumpPanel extends Component {
       Settimer(){
         var Start = this.state.back_Start.split(":");
         var Stop = this.state.back_Stop.split(":");
-        //http://192.168.10.41/skrapi/SystemAPI/Pump/SetTime/skr/1/1/1/1/1
         Axios.get(`${this.state.API}/Pump/SetTime/${this.props.keyAPI}/${this.props.pumpNum}/${Start[0]}/${Start[1]}/${Stop[0]}/${Stop[1]}`)
-        //.then(res => {console.log(res.data)})
       }
       ToggleMode(){
         var PumpMode
@@ -172,11 +170,8 @@ class PumpPanel extends Component {
         else{
           PumpMode ="Auto"
         }
-        console.log(PumpMode)
         const api = `${this.state.API}/Pump/Mode/${this.props.keyAPI}/${this.props.pumpNum}/${PumpMode}`
-        console.log(api);
         Axios.get(api)
-        .then(res => {console.log(res.data)})
       }
 
       

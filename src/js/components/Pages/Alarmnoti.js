@@ -38,7 +38,6 @@ export default class Alarmnoti extends Component {
 
 
     render() {
-       //console.log(this.props.Alarmprop)
        var AlarmHtml = ""
        var btnBlink =""
        var count = 0

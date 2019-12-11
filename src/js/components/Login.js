@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import logo from '../components/Img/tistr-logo-sq.png'
 import { withRouter } from 'react-router-dom';
 import Axios from 'axios';
+
 import './Login.css';
 class Login extends Component {
 
@@ -43,19 +44,10 @@ class Login extends Component {
     }
 
     componentDidMount(){
-        // if((typeof localStorage.getItem('userToken') != null))
-        // {
-        //     this.toHome();
-        // }
-        //console.log(localStorage.getItem('userToken'))
         if (localStorage.getItem('userToken') != null )
         {
             this.toHome();
         }
-        //console.log(localStorage.getItem('userToken'))
-        // if (localStorage.getItem('userToken') != null || localStorage.getItem('userToken') != ""){
-        //     this.toHome();
-        // }
     }
 
     onChange = (e) => this.setState({[e.target.name] : e.target.value });
@@ -63,13 +55,14 @@ class Login extends Component {
     render() {
         return (
            <div class ="wrapper fadeInDown">
+               
                  <div id = "formContent">
                     <div class="fadeIn first">
                         <img src={logo} id="icon" alt="User Icon" />
                     </div>
 
                         <form onSubmit = {this.onSubmit} >
-                        <h2>Pump Control</h2>
+                        <h2>Pump Control</h2><h6>ver 1.0</h6>
                         <input type="text" id="login" class="fadeIn second" name="username" placeholder="username" onChange={this.onChange} value ={this.state.username} />
                         <br/>
                         

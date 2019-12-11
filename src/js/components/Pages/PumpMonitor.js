@@ -5,7 +5,7 @@ import Remote from './Remote'
 import { withRouter } from 'react-router-dom';
 import Axios from 'axios';
 import txt from '!!raw-loader!../config/Config.txt';
-import Flowswitch from './Flowswitch'
+import Flowswitch from './Flowswitch';
 import Alarmnoti from './Alarmnoti';
 
  class PumpMonitor extends Component {
@@ -41,12 +41,8 @@ import Alarmnoti from './Alarmnoti';
 
     componentDidMount()
     {   
-        //if (localStorage.getItem('userToken') === null || localStorage.getItem('userToken') === "")
-        //console.log(localStorage["userToken"])
-       
-        if (localStorage.getItem('userToken') === null)//(localStorage.getItem('userToken') === null)
+        if (localStorage.getItem('userToken') === null)
         {   
-            //console.log('no localstorage')
             this.props.history.push(`/`);
         }
         else{
@@ -70,7 +66,6 @@ import Alarmnoti from './Alarmnoti';
         {
            token =  this.props.keytoapi;
         }
-        console.log(token)
         this.setState((state) => ({ accessToken : token}));
     }
 
@@ -90,12 +85,9 @@ import Alarmnoti from './Alarmnoti';
     async loadData() {
             {
                 Axios.get(`${this.state.API}/Pump/WebUpdateStatus/${this.state.accessToken}`)
-                //Axios.get(`http://192.168.10.36/skapi/SystemAPI/Pump/RestAPI`)
                 .then(res => { const result = JSON.parse(res.data);
                         if(result.Value === "Access denied!")
                             {
-                              //localStorage.setItem('userToken', "");
-                              //localStorage.setItem('userToken', "");
                               localStorage.removeItem('userToken');
                               this.props.history.push(`/`);
                             }
@@ -103,11 +95,8 @@ import Alarmnoti from './Alarmnoti';
                             { 
                                 if(result.IsSuccess)
                                 {
-                                    //console.log(this.state.accessToken)
                                     var update_status =  JSON.parse(result.Value);
                                     var update_alarm =  JSON.parse(result.Alarm);
-                                   
-                                    console.log( "status"+ update_status.IsReset1 + update_status.IsReset2);
                                     this.sendTable(this);
                                     this.setState({
                                         Remote1 : update_status.RemoteLocal1,
@@ -141,7 +130,7 @@ import Alarmnoti from './Alarmnoti';
    
   
     render() {
-       
+       console.log(this.state.emergency)
         return (
             <div class = "mainLayout">
             <div class = "background">
@@ -153,23 +142,20 @@ import Alarmnoti from './Alarmnoti';
               
                         
                         
-                { this.state.emergency ?   <div class="emergency blink"> <h1>EMERGENCY</h1></div>  :
-
-                        <div class = "container-s">
+                { this.state.emergency ?                  <div class = "container-s">
                         <div class = "panel-1">
                         <Panel pumpNum = "1" keyAPI ={this.state.accessToken} status = {this.state.pump1}  runDry = {this.state.Rundry1} remote = {this.state.Remote1} F2S = {this.state.Fault2S1}  Pmode = {this.state.Mode1} timestart = {this.state.timeStart1} timestop = {this.state.timeStop1} reset = {this.state.reSet1}  />                    
                         </div>
                         <div class = "panel-2"> 
                         <Panel pumpNum = "2" keyAPI ={this.state.accessToken}  status = {this.state.pump2} runDry = {this.state.Rundry2} remote = {this.state.Remote2} F2S = {this.state.Fault2S2}  Pmode = {this.state.Mode2} timestart = {this.state.timeStart2} timestop = {this.state.timeStop2} reset = {this.state.reSet2} />
                         </div>
-                </div>  }
+                </div> : <div class="emergency blink"> <h1>EMERGENCY</h1></div> 
+          }
 
 
                     </div>       
             </div>
-            { this.state.emergency ?  null :
-
-            <div class = "symbol">   
+            { this.state.emergency ?         <div class = "symbol">   
             <div class = "container-pump-status">
              <div class = "border-pump" ><Remote   status = {this.state.pump1}></Remote> </div>
             <div class = "border-pump-2" ><Remote   status = {this.state.pump2}></Remote> </div> 
@@ -178,7 +164,9 @@ import Alarmnoti from './Alarmnoti';
             <div class = "border-flow-panel" ><Flowswitch flow = {this.state.Fsw1}></Flowswitch></div>
             <div class = "border-flow-panel2" ><Flowswitch flow = {this.state.Fsw2}></Flowswitch></div>
             </div>    
-            </div> }
+            </div>:null 
+
+      }
 
             </div>
             </div>

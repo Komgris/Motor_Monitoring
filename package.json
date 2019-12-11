@@ -54,6 +54,7 @@
     "react-dom": "^16.9.0",
     "react-json-to-table": "^0.1.5",
     "react-router-dom": "^5.0.1",
+    "react-widgets": "^4.4.11",
     "reactjs-popup": "^1.5.0",
     "reactstrap": "^8.0.1",
     "register-service-worker": "^1.6.2",

@@ -16,6 +16,7 @@ class Header extends Component {
 
   clearLocal =()=>{
     localStorage.removeItem('userToken');
+    this.props.history.push(`/`);
   }
   checkState = () =>{
     if(this.props.location.pathname === "/pump")
@@ -45,11 +46,11 @@ class Header extends Component {
     return (
       <div>
         <Navbar   color="light" light expand="md"  >
-          <NavbarBrand href="/" className="mr-auto" >
+          <NavbarBrand  className="mr-auto" >
           <img src={logo} width="300" height="50" alt=""/>
           </NavbarBrand>
             <NavItem>
-              <NavLink  href="/" onClick={this.clearLocal.bind(this)} >{this.state.loginState}</NavLink>
+              <NavLink   onClick={this.clearLocal.bind(this)} >{this.state.loginState}</NavLink>
               {/* <NavLink href="/" active>LOG IN</NavLink> */}
             </NavItem>
               <Collapse isOpen={!this.state.collapsed} navbar>

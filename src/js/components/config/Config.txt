@@ -1,3 +1,3 @@
-http://192.168.10.39/skrapi/SystemAPI
+http://110.49.145.137//skr_api/SystemAPI
 
 

@@ -18,28 +18,11 @@ export default class table extends Component {
             dateEnd: new Date(),
             accessToken:"",
             API : txt,
-         result:"",
+            result : ""
 
-                // result:[ {'frit': 'Apple', 'cost': 100},
-                // {'fruit': 'Orange', 'cost': 50},
-                // {'fruit': 'Banana', 'cost': 35},
-                // {'fruit': 'Mango', 'cost': 70},
-                // {'fruit': 'Pineapple', 'cost': 45},
-                // {'fruit': 'Papaya', 'cost': 40},
-                // {'fruit': 'Watermelon', 'cost': 35}],
-
-            // rresult:"{\"IsSuccess\":true,\"Value\":\"[{\\\"Pump\\\":\\\"1\\\",\\\"Event\\\":\\\"test3\\\",\\\"Time\\\":\\\"17/10/2019 00:00:00\\\"},{\\\"Pump\\\":\\\"1\\\",\\\"Event\\\":\\\"test3\\\",\\\"Time\\\":\\\"17/10/2019 00:00:00\\\"},{\\\"Pump\\\":\\\"1\\\",\\\"Event\\\":\\\"test3\\\",\\\"Time\\\":\\\"17/10/2019 00:00:00\\\"}]\"}"
-               
-
-                // {'Pump':1,'Event':'test3','Time':'17/10/2019 00:00:00'},
-                // {'Pump':1,'Event':'test3','Time':'17/10/2019 00:00:00'},
-                // {'Pump':1,'Event':'test3','Time':'17/10/2019 00:00:00'},
-                // {'Pump':1,'Event':'test3','Time':'17/10/2019 00:00:00'},
-
-                
-                
-                //"{\"IsSuccess\":true,\"Value\":\"[{\\\"Pump\\\":\\\"1\\\",\\\"Event\\\":\\\"test3\\\",\\\"Time\\\":\\\"17/10/2019 00:00:00\\\"},{\\\"Pump\\\":\\\"1\\\",\\\"Event\\\":\\\"test3\\\",\\\"Time\\\":\\\"17/10/2019 00:00:00\\\"},{\\\"Pump\\\":\\\"1\\\",\\\"Event\\\":\\\"test3\\\",\\\"Time\\\":\\\"17/10/2019 00:00:00\\\"}]\"}"
-        }    
+                // result:[ {'Pump': '1', 'Event': 'phaseProtection','Time':'2019-12-10 10:28:14'},
+                //  {'Pump': '2', 'Event': 'phaseProtection','Time':'2019-12-10 10:28:14'}]
+        }     
     }
 
 

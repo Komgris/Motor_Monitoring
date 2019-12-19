@@ -54,15 +54,15 @@ class Login extends Component {
 
     render() {
         return (
-           <div class ="wrapper fadeInDown">
+           <div className ="wrapper fadeInDown">
                
                  <div id = "formContent">
-                    <div class="fadeIn first">
+                    <div className="fadeIn first">
                         <img src={logo} id="icon" alt="User Icon" />
                     </div>
 
                         <form onSubmit = {this.onSubmit} >
-                        <h2>Pump Control</h2><h6>ver 1.0</h6>
+                        <h2>Pump Control</h2><h6>ver 1.5</h6>
                         <input type="text" id="login" class="fadeIn second" name="username" placeholder="username" onChange={this.onChange} value ={this.state.username} />
                         <br/>
                         

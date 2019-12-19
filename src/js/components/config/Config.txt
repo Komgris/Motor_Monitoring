@@ -1,3 +1,3 @@
-http://110.49.145.137//skr_api/SystemAPI
+http://110.49.145.137/skr_api/SystemAPI
 
 

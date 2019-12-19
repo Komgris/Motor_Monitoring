@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem,Modal, ModalBody, ModalFooter,Button,Badge  } from 'reactstrap';
+import { Dropdown,Spinner, DropdownToggle, DropdownMenu, DropdownItem,Modal, ModalBody, ModalFooter,Button,Badge  } from 'reactstrap';
 import txt from '!!raw-loader!../config/Config.txt'
 import Axios from 'axios';
 import MaterialUIPickers from './Timepicker'
 import Popup from "reactjs-popup";
 import './PumpPanel.css'
 
+var lastStatusMode;
+var lastStatusReset;
 class PumpPanel extends Component {
     constructor(props) {
         super(props);
@@ -19,6 +21,10 @@ class PumpPanel extends Component {
         this.toggle_modal_stop= this.toggle_modal_stop.bind(this);
         this.Modechange = this.Modechange.bind(this);
         this.ModeTimer = this.ModeTimer.bind(this);
+        this.IsReset = this.IsReset.bind(this);
+        this.ToggleSettime = this.ToggleSettime.bind(this);
+        this.IsStatusStart = this.IsStatusStart.bind(this);
+        this.IsStatusStop = this.IsStatusStop.bind(this)
 
 
         this.state = {
@@ -28,6 +34,7 @@ class PumpPanel extends Component {
           back_Start:"",
           back_Stop:"",
           dropdownOpen: false,
+          IsSpin:false,
           pumpnum: this.props.pumpNum,
           
          
@@ -88,6 +95,8 @@ class PumpPanel extends Component {
             return  <div  style ={{ backgroundColor :`yellow`}}  class="border-blink"> </div>
         case null:
             return  <div  style ={{ backgroundColor :`grey`}}  class="border-noblink"> </div>
+        default: 
+            return <div  style ={{ backgroundColor :`grey`}}  class="border-noblink"> </div>
            
       }
     }
@@ -103,22 +112,38 @@ class PumpPanel extends Component {
     }
 
     Modechange = () =>{
-      switch(this.props.Pmode){
-        case true:
+      
+      if(this.props.Pmode === "True" || this.props.Pmode === "False"){
+        lastStatusMode = this.props.Pmode
+      }
+      switch(lastStatusMode){
+        case "True":
             return <button onClick={this.ToggleMode.bind(this)} type="button" class="btn btn-success block" aria-label="Left Align">
             AUTO
            </button>
-        case false:
+        case "False":
             return <button onClick={this.ToggleMode.bind(this)} type="button" class="btn btn-secondary block" aria-label="Left Align">
            MANUAL
            </button>
-      
+      }
+    }
+    IsReset = () =>{
+
+      if(this.props.reset === "True" || this.props.reset === "False"){
+        lastStatusReset = this.props.reset
+      }
+      switch(lastStatusReset){
+        case "True":
+            return  <button id="reset-btn" type="button" class="btn btn-warning block" aria-label="Left Align"  onClick = {this.Pumpreset.bind(this)} >
+            RESET
+            </button>
+        case "False":
+            return ""
       }
     }
     ModeTimer = () =>{
-
-      switch(this.props.Pmode){
-        case true:
+      switch(lastStatusMode){
+        case "True":
     return <Popup trigger={<button type="button" class="btn btn-success block"> SET TIME </button>}  closeOnDocumentClick>
             <div>
            <MaterialUIPickers  timeFormat ={"Time Start"} pumpid = {this.props.pumpNum} timeback={this.onCallbackstart.bind(this)}/>
@@ -127,8 +152,30 @@ class PumpPanel extends Component {
            </div>
           </Popup>
           
-        case false:
+        case "False":
             return ""
+      }
+    }
+    IsStatusStart =()=>{
+      switch(this.props.status){
+        case "Run":
+            return  false
+        case "Stop":
+            return    true
+            default: 
+            return null
+           
+      }
+    }
+    IsStatusStop =()=>{
+      switch(this.props.status){
+        case "Run":
+            return  true
+        case "Stop":
+            return    false
+            default: 
+            return null
+           
       }
     }
 
@@ -164,28 +211,42 @@ class PumpPanel extends Component {
       }
       ToggleMode(){
         var PumpMode
-        if(this.props.Pmode){
+        if(this.props.Pmode === "True"){
           PumpMode ="Manual"
         }
-        else{
+        else if (this.props.Pmode === "False") {
           PumpMode ="Auto"
         }
         const api = `${this.state.API}/Pump/Mode/${this.props.keyAPI}/${this.props.pumpNum}/${PumpMode}`
         Axios.get(api)
       }
-
+      ToggleSettime(){
+        if(this.props.Pmode === "True"){
+          return true
+        }
+        else if (this.props.Pmode === "False") {
+          return false
+        }
+      }
+      componentWillReceiveProps(nextProps){
+        if(nextProps.status !== this.props.status || this.props.runDry === true|| this.props.F2S === true){
+          this.setState({IsSpin : false })
+        }
+      }
       
     Pumpget =() =>{
         if(this.state.modal_start)
         {
           this.setState(prevState => ({
-            modal_start: !prevState.modal_start
+            modal_start: !prevState.modal_start,
+            IsSpin: true
           }));
         }
         else if(this.state.modal_stop)
         {
           this.setState(prevState => ({
-            modal_stop: !prevState.modal_stop
+            modal_stop: !prevState.modal_stop,
+            IsSpin: true
           }));
         }
     }
@@ -198,9 +259,14 @@ class PumpPanel extends Component {
       const rundry = this.Rundry_status();
       const mode = this.Modechange();
       const popUp = this.ModeTimer();
+      const isReset = this.IsReset();
+      const isAuto = this.ToggleSettime();
+      const isStatusStart = this.IsStatusStart();
+      const isStatusStop = this.IsStatusStop();
       
-
+      
         return (
+          
             <div class="border-panel" style ={{
 
                 width : "100%",
@@ -208,20 +274,18 @@ class PumpPanel extends Component {
                 backgroundColor : "#e6e6e6",
                 
             }}>
-             <div class = "position-border"> {colorwarning}    </div> 
-         
-          
-            <div class = "content-border"> 
-
-          <div class = "status-warning"> 
+             <div class = "position-border"> {colorwarning}    </div>          
+              <div class = "content-border"> 
+              <div class = "status-warning"> 
          
               
               <h4><Badge color="primary">{Remote}</Badge></h4>
-              { this.props.Pmode &&  <h4><Badge color="info">Start  { this.props.timestart }</Badge><Badge color="info">Stop  { this.props.timestop }</Badge></h4>}
+              { isAuto &&  <h4><Badge color="info">Start  { this.props.timestart }</Badge><Badge color="info">Stop  { this.props.timestop }</Badge></h4>}
               <h4><div class ="blink">{rundry}</div></h4>
               <h4><div class ="blink">{fault2start}</div></h4>
               </div>
-                <a>Status :  {Pumpstatus} </a>
+                {this.props.disconnect ? <a style={{ color : "red" }} className ="blink"> Disconnected From PLC</a>  : <a>Status :  {Pumpstatus} </a>}
+               {this.state.IsSpin && <Spinner color="primary" />  }
                 <div class = "btnContain">
                 
                 <Dropdown isOpen={this.state.btnDropright} toggle={() => { this.setState({ btnDropright: !this.state.btnDropright }); }} style ={{    
@@ -230,9 +294,8 @@ class PumpPanel extends Component {
                 PUMP  {this.props.pumpNum}
                 </DropdownToggle>
                 <DropdownMenu>
-                
-                <DropdownItem onClick = {this.toggle_modal_start} >START</DropdownItem>
-                {/* -----------------------------------START-------------------------------------*/}
+
+               {isStatusStart && <div><DropdownItem onClick = {this.toggle_modal_start} >START</DropdownItem>
                 <Modal isOpen={this.state.modal_start} toggle={this.toggle_modal_start} className={this.props.className}>   
                   <ModalBody>
                    START ?
@@ -241,11 +304,10 @@ class PumpPanel extends Component {
                     <Button color="primary" onClick={this.PumpStart.bind(this)}>Confirm</Button>{' '}
                     <Button color="secondary" onClick={this.toggle_modal_start}>Cancel</Button>
                   </ModalFooter>
-                </Modal>
-                 {/* -----------------------------------START-------------------------------------*/}
-                <DropdownItem onClick = {this.toggle_modal_stop}  >STOP</DropdownItem>
+                </Modal></div> }
 
-                 {/* -----------------------------------STOP-------------------------------------*/}
+             
+                 {isStatusStop && <div> <DropdownItem onClick = {this.toggle_modal_stop}  >STOP</DropdownItem>
                  <Modal isOpen={this.state.modal_stop} toggle={this.toggle_modal_stop} className={this.props.className}>   
                   <ModalBody>
                   STOP ?
@@ -254,15 +316,12 @@ class PumpPanel extends Component {
                     <Button color="primary" onClick={this.PumpStop.bind(this)}>Confirm</Button>{' '}
                     <Button color="secondary" onClick={this.toggle_modal_stop}>Cancel</Button>
                   </ModalFooter>
-                </Modal>
+                </Modal> </div>}
 
                 </DropdownMenu>
                 </Dropdown>
                
-                { this.props.reset && 
-                <button id="reset-btn" type="button" class="btn btn-warning block" aria-label="Left Align"  onClick = {this.Pumpreset.bind(this)} >
-                RESET
-                </button> }
+                  {isReset}
                   {mode}
                   {popUp}
                 </div>
